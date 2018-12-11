@@ -1,2 +1,3 @@
-# 3203-final-practice
-practice and notes for comp3203 final exam
+# COMP3203 Final Practice<br>By: William Findlay
+
+Please open `practice.pdf`.
