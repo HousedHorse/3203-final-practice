@@ -2,6 +2,7 @@
 ---
 author: |
   | William Findlay
+  | et al.
 title: |
   | COMP3203 Final Exam Notes
 date: \today
@@ -158,7 +159,83 @@ output:
 
 # Test 1 Stuff (Brief and Important Only)
 
-- test 1 stuff here
+## Units
+
+|prefix|base 10 conversion|base 2 conversion|
+|--:|:--|:--|
+|pico|$10^{-12}$|$2^{-40}$|
+|nano|$10^{-9}$|$2^{-30}$|
+|micro|$10^{-6}$|$2^{-20}$|
+|milli|$10^{-3}$|$2^{-10}$|
+|---|$10^0$|$2^{0}$|
+|kilo|$10^3$|$2^{10}$|
+|mega|$10^6$|$2^{20}$|
+|giga|$10^9$|$2^{30}$|
+|tera|$10^{12}$|$2^{40}$|
+|peta|$10^{15}$|$2^{50}$|
+
+- $Hz \implies \text{cycles per second}$
+  - $GHz \implies 10^9 \text{ cycles per second}$
+  - etc.
+
+## Equations
+
+### Frequency and Period
+
+- $T = \frac{1}{f}$
+- $f = \frac{1}{T}$
+
+### Wavelength
+
+- $\lambda = vT$
+- $f = \frac{v}{\lambda}$, since $f = \frac{1}{T} \implies \lambda = \frac{v}{f}$
+  - for electromagnetic waves in a vacuum, $v = c$
+
+### Bandwidth
+
+- $B = \text{lowest frequency} - \text{highest frequency}$
+  - $Hz$
+  - $bps$
+  - or any scalar of the above two
+
+### Delay
+
+- $\text{propagation delay} = \frac{\text{distance}}{\text{speed of light in medium}}$
+- $\text{transmit delay} = \frac{\text{packet size}}{\text{bandwidth}}$
+- $\text{queue delay} = \text{buffering and switching delays at nodes}$
+- $\textbf{total delay} = \text{propagation} + \text{transmit} + \text{queue}$
+- **RTT** or round-trip-time $= 2 \times \text{delay}$
+
+### Delay Bandwidth Product
+
+- $\text{\# of bits} = B \times D$
+  - e.g., $\text{\# of bits} = 10bps \times 10s = 100b$
+- this is the number of bits of data that can be sent before the first bit arrives
+- we can send $2(B \times D)$ bits before we receive the first reply bit
+
+### Shannon Capacity
+
+- maximum theoretical capacity
+- $C = B \log_2 \left(1 + \frac{S}{N}\right)$, where $\frac{S}{N}$ is the signal/noise ratio
+  - high $\frac{S}{N} \implies$ good capacity 
+  - low $\frac{S}{N} \implies$ poor capacity $\because \log_2(1 + 0) = 0$
+- $\frac{S}{N}$ should be in $Db$
+
+### Redundancy
+
+- $\text{redundancy} = \frac{n + r}{n}$
+- $r$ redundancy bits must cover $n + r$ bits for errors
+  - in other words, $2^r$ must be able to express $n + r$ bits
+  - this means $2^r > n + r$
+  - or, $n < 2^r - r$
+
+## Error Checking
+
+- VRC
+- LRC
+- **CRC**
+  - *this is usually used before ARQ*
+- checksum
 
 # ARQs
 
@@ -291,17 +368,15 @@ ARQ protocol.](img/saw3la.png){height=30%}
 
 ## Uncoordinated Access Control
 
-***COME BACK HERE***
-
 ## Ethernet
 
-# Coordinated Access
+## Coordinated Access
 
-## Tree Algorithm
+### Tree Algorithm
 
-## Binary Countdown
+### Binary Countdown
 
-## Bitmap
+### Bitmap
 
 # Wireless
 
