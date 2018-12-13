@@ -12,8 +12,8 @@ Please open `practice.pdf`.
 
 ### Steven S
 
-- week 4: wireless
-- week 6: routing
+- wireless
+- routing
 
 ### Tri Do
 
@@ -25,5 +25,7 @@ Please open `practice.pdf`.
 - TCP
 
 ### Steven Fang
+
+- IP
 
 ### Tom
