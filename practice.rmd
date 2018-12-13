@@ -130,13 +130,11 @@ header-includes: |
   \renewcommand{\labelitemiii}{\textbullet}
   \renewcommand{\labelitemiv}{-}
 
-  \usepackage{ulem}
-
   \titleformat{\paragraph}
   {\itshape}
   {}
   {0em}
-  {\uline{#1}}[ ]
+  {\underline{#1}}[ ]
   \titleformat{\subparagraph}
   {\itshape}
   {}
