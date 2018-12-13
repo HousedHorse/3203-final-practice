@@ -38,3 +38,6 @@ i) points
 Always separate bullet points and parapgrahs by
 
 - an empty line
+
+**This is bold text.**
+*This is italic text.*
