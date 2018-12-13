@@ -140,6 +140,8 @@ header-includes: |
   {}
   {0em}
   {#1}[ ]
+
+  \newcommand{\acro}[1]{\textbf{(#1))}}
   ```
 output:
   pdf_document:
@@ -266,6 +268,26 @@ ARQ protocol.](img/saw3la.png){height=30%}
     - never enters a deadlock condition
 
 # Multiaccess
+
+## LANs
+
+- two types
+  - **switched**
+    - lines, multiplexes, switches
+    - hierarchical addressing scheme
+    - routing tables
+  - **broadcast**
+    - no routing
+    - flat addressing scheme
+    - \acro{M}edium \acro{A}ccess \acro{C}ontrol to coordinate transmissions
+    - **preferred over switched** due to **simplicity**
+
+## The Problem with Shared Channels
+
+- in *point-to-point* networks we have signal as a function of one transmitted signal
+- in *shared* networks, we may have **more than one** transmission contributing to a signal
+
+## MAC Protocol
 
 ## Uncoordinated Access Control
 
