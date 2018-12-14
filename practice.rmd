@@ -1675,7 +1675,7 @@ n &\le \frac{20}{9}\\
 
 Take inner product of vectors in$\mod 2$.
 \begin{align*}
-\langle\vec{A},\vec{B}\rangle \mod 2 &= 1+0+0+0+1+0+0+1+1 \mod 2\\
+\langle\vec{A},\vec{B}\rangle \mod 2 &= 1+0+0+0+0+1+0+1+1 \mod 2\\
 &= 0 && \iff \text{orthogonal}
 \end{align*}
 
@@ -1713,8 +1713,8 @@ Slot|Station
 
  Face|List of Edges Being Traversed
 ----:|:----------------------------
-$F_1$|2, 1, 3                        
-$F_3$|13                           
+$F_2$|4                        
+$F_3$|12,13                           
 $F_5$|14, 15                        
 
 ###

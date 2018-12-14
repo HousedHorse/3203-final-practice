@@ -316,3 +316,25 @@ Static $\implies$ separate dedicated channels
 - all nodes **equivalent**
 - make a decision together
   - *distributed* fashion
+
+## How Does MAC Work?
+
+i) **measure** prop time
+i) **coordinate** access
+i) **select** a winner
+
+\begin{lstlisting}
+def coordinateTwoHosts(A,B):
+  A.listen(channel)
+
+  if channel not busy:
+    A.transmit(m)
+    while no message from B:
+      A.listen(channel)
+    if time > $T_{PROP}$:
+      break
+    else:
+      A.retransmit(m)
+
+  repeat for B
+\end{lstlisting}
