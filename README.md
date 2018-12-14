@@ -29,3 +29,5 @@ Please open `practice.pdf`.
 - IP
 
 ### Tom
+
+- GPS
