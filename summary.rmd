@@ -1,0 +1,318 @@
+
+---
+author: |
+  | William Findlay
+title: |
+  | COMP3203 Final Exam Summary
+date: \today
+bibliography: /home/housedhorse/.bibs/uni.bib
+csl: /home/housedhorse/.bibs/ieee.csl
+subparagraph: yes
+header-includes: |
+  ``` {=latex}
+  \usepackage{float}
+  \usepackage{listings}
+  \usepackage[hang,bf]{caption}
+  \usepackage{framed}
+  \usepackage[section]{placeins}
+
+  \allowdisplaybreaks
+
+  % fancy headers/footers
+  \makeatletter
+  \usepackage{fancyhdr}
+  \lhead{\@author}
+  \chead{}
+  \rhead{\@title}
+  \lfoot{}
+  \cfoot{\thepage}
+  \rfoot{}
+  \renewcommand{\headrulewidth}{0.4pt}
+
+  \usepackage{amsmath, amsfonts,amssymb, amsthm}
+  \usepackage{siunitx}
+  \usepackage[boxruled,lined,linesnumbered,titlenumbered]{algorithm2e}
+
+  \usepackage{setspace}
+  \usepackage{changepage}
+  \usepackage[explicit]{titlesec}
+  \usepackage{aliascnt}
+
+  \floatplacement{figure}{!htb}
+  \floatplacement{table}{!htb}
+  \lstset{mathescape=true,numbers=left,breaklines=true,frame=single,language=python}
+  \setlength{\captionmargin}{1in}
+
+  \newgeometry{margin=1in}
+
+  \newtheoremstyle{plain}
+  {12pt}   % ABOVESPACE
+  {12pt}   % BELOWSPACE
+  {\itshape}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+
+  \newtheoremstyle{definition}
+  {12pt}   % ABOVESPACE
+  {12pt}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\bfseries} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+
+  \newtheoremstyle{remark}
+  {12pt}   % ABOVESPACE
+  {12pt}   % BELOWSPACE
+  {\normalfont}  % BODYFONT
+  {0pt}       % INDENT (empty value is the same as 0pt)
+  {\itshape} % HEADFONT
+  {.}         % HEADPUNCT
+  {5pt plus 1pt minus 1pt} % HEADSPACE
+  {}          % CUSTOM-HEAD-SPEC
+
+  \theoremstyle{plain}
+
+  % define theorem
+  \newtheorem{theorem}{Theorem}[section]
+  \providecommand*{\theoremautorefname}{Theorem}
+
+  % define lemma
+  \newtheorem{lemma}{Lemma}[section]
+  \providecommand*{\lemmaautorefname}{Lemma}
+
+  % define claim
+  \newtheorem{claim}{Claim}[section]
+  \providecommand*{\claimautorefname}{Claim}
+
+  % define corollary
+  \newtheorem{corollary}{Corollary}[section]
+  \providecommand*{\corollaryautorefname}{Corollary}
+
+  % define proposition
+  \newtheorem{proposition}{Proposition}[section]
+  \providecommand*{\propositionautorefname}{Proposition}
+
+  % define conjecture
+  \newtheorem{conjecture}{Conjecture}[section]
+  \providecommand*{\conjectureautorefname}{Conjecture}
+
+  \theoremstyle{remark}
+
+  % define observation
+  \newtheorem{observation}{Observation}[section]
+  \providecommand*{\observationautorefname}{Observation}
+
+  % define remark
+  \newtheorem{remark}{Remark}[section]
+  \providecommand*{\remarkautorefname}{Remark}
+
+  \theoremstyle{definition}
+
+  % define example
+  \newtheorem{example}{Example}[section]
+  \providecommand*{\exampleautorefname}{Example}
+
+  % define definition
+  \newtheorem{definition}{Definition}[section]
+  \providecommand*{\definitionautorefname}{Definition}
+
+  \newcommand{\blackbox}{\hfill$\blacksquare$}
+  \usepackage{tikz}
+  \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+              \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+  \renewcommand{\labelitemi}{$\bullet$}
+  \renewcommand{\labelitemiii}{\textbullet}
+  \renewcommand{\labelitemiv}{-}
+
+  \titleformat{\paragraph}
+  {\itshape}
+  {}
+  {0em}
+  {\underline{#1}}[ ]
+  \titleformat{\subparagraph}
+  {\itshape}
+  {}
+  {0em}
+  {#1}[ ]
+  ```
+output:
+  pdf_document:
+    number_sections: true
+    fig_crop: true
+    fig_caption: true
+    keep_tex: false
+---
+\newpage
+\tableofcontents
+\newpage
+\pagestyle{fancy}
+
+# Units
+
+- unit chart
+
+|prefix|base 10|base 2|
+|--:|:--|:--|
+|pico|$10^{-12}$|$2^{-40}$|
+|nano|$10^{-9}$|$2^{-30}$|
+|micro|$10^{-6}$|$2^{-20}$|
+|milli|$10^{-3}$|$2^{-10}$|
+|---|$10^0$|$2^{0}$|
+|kilo|$10^3$|$2^{10}$|
+|mega|$10^6$|$2^{20}$|
+|giga|$10^9$|$2^{30}$|
+|tera|$10^{12}$|$2^{40}$|
+|peta|$10^{15}$|$2^{50}$|
+
+- $Hz \implies \text{cycles per second}$
+  - $GHz \implies 10^9 \text{ cycles per second}$
+  - etc.
+
+# Formulas
+
+## Frequency
+\begin{align*}
+f &= \frac{1}{T}&&&&
+\end{align*}
+
+## Period
+\begin{align*}
+T &= \frac{1}{f}&&&&
+\end{align*}
+
+## Wavelength
+\begin{align*}
+\lambda &= vT&&&&\\
+\lambda &= \frac{v}{f}&&&&
+\end{align*}
+
+## Bandwidth
+\begin{align*}
+B &= vT&&&&
+\end{align*}
+
+## Delay
+\begin{align*}
+D &= D_P + D_T + D_Q&&&&
+\end{align*}
+
+### Propagation
+\begin{align*}
+D_P &= \frac{\text{distance}}{\text{speed of light}}&&&&
+\end{align*}
+
+### Transmit
+\begin{align*}
+D_T &= \frac{\text{packet size}}{\text{bandwidth}}&&&&
+\end{align*}
+
+### Queue
+\begin{align*}
+D_Q &= \sum_{\text{nodes}}(\text{buffering + switching})&&&&
+\end{align*}
+
+### Round Trip Time
+\begin{align*}
+RTT &= 2D&&&&
+\end{align*}
+
+- how long does it take a packet to go **there and back**
+
+## Overhead
+\begin{align*}
+T_O &= \frac{h}{p} && \text{where $h=$ overhead bits, $p=$ message bits}
+\end{align*}
+
+- **extra** over **what we want**
+
+# Error Checking
+- VRC
+- LRC
+- **CRC**
+  - this guy is usually used
+  - use in tandem with ARQ
+- checksum
+
+# ARQ
+- automatic repeat request
+- handle errors by requesting they be resent
+- use in tandem with error detection
+  - **CRC**
+  - checksum
+- main parts
+  - **ACKS**
+  - **NAKS**
+  - **timers**
+
+## Sliding Window
+- number frames sequentially
+- window of either fixed or variable size
+  - see TCP section
+
+### Go Back N
+- go back to the beginning of the window and resend everything
+- $w - i = N$
+
+### Selective Reject
+- **only** resend the **damaged frame**
+- need **sorting logic**
+  - frames may be out of order
+
+## Stop and Wait
+- like sliding window with a **window size $=1$**
+
+# Multiaccess
+- problem of **shared channels**
+  - who gets a turn?
+  - how do we make sure things get to the right place?
+- point-to-point is easy (by contrast)
+
+## LANs
+- local area network
+- shared channel
+
+### Switched LANs
+- *interconnection* by *transmission*
+- **complex**
+  - routing tables
+  - hierarchical addressing
+
+### Broadcast LANs
+- information *received by all*
+- **simple**
+  - no routing
+  - flat addressing scheme
+- MAC (medium access control)
+- **used more often**
+
+## MAC Protocol
+- Medium Access Control
+- **dynamic**
+- on demand
+- must **minimize** collisions
+
+\begin{framed}
+\textbf{MAC vs Static}
+
+MAC $\implies$ dynamic, on demand
+
+Static $\implies$ separate dedicated channels
+\end{framed}
+
+### Centralized
+- *one* **master node**
+  - makes decisions for slaves nodes
+- *dependent* on **master**
+  - what if it fails?
+  - less efficient
+
+### Distributed
+- all nodes **equivalent**
+- make a decision together
+  - *distributed* fashion
