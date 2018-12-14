@@ -142,7 +142,7 @@ header-includes: |
   {0em}
   {#1}[ ]
 
-  \newcommand{\acro}[1]{\textbf{(#1))}}
+  \newcommand{\acro}[1]{\textbf{(#1)}}
 
   \usepackage{siunitx}
   ```
@@ -369,8 +369,8 @@ ARQ protocol.](img/saw3la.png){height=30%}
   transmitted signal
 
 - How do we mediate access to shared channels?
-	-Medium Access Control (MAC) sublayer between Physical and
-	 DLC (Data Link Control) is used to solve this problem
+  -Medium Access Control (MAC) sublayer between Physical and
+   DLC (Data Link Control) is used to solve this problem
 
 ## MAC Protocol
 - *Centralized*: A distinguished node (master) makes access
@@ -385,7 +385,7 @@ ARQ protocol.](img/saw3la.png){height=30%}
                                    medium into separate dedicated channels.
 - *MAC Schemes*: Dynamic and on-demand. However, must
                      minimize collisions.
-					 
+           
 ## Some examples: Types of Networks
 - Satellite channels (wireless)
   Iridium network
@@ -396,22 +396,22 @@ ARQ protocol.](img/saw3la.png){height=30%}
 - Packet radio networks (wireless)
   Ad Hoc, Bluetooth, Piconets, Wireless networks
 - Cellular networks (wireless)
-	  Cell phones, Wireless LANs
+    Cell phones, Wireless LANs
 
 ![Some example of network topologies.](img/topologiesExample.png)
  
 ## How Do You Mediate Access?
 - Given that there are many users, several issues must be taken into account.
-	1. Give access to each user that wants to communicate.
-	2. Decide who talks first.
-	3. Be fair to all.
+  1. Give access to each user that wants to communicate.
+  2. Decide who talks first.
+  3. Be fair to all.
  
 - Let's work with the case of 2 hosts
-	- We need to address the following
-		1. Measure the Propagation Time
-		2. Coordinate access.
-		3. Select a winner.
-		
+  - We need to address the following
+    1. Measure the Propagation Time
+    2. Coordinate access.
+    3. Select a winner.
+    
 ## Measuring the Propagation Time(2 hosts)
 - Let $T_{prop}$ be the bit-propagation time of a channel.
 - Let d = “distance between the two stations” and v = “the speed of the medium”
@@ -449,13 +449,13 @@ packet transmission to the time a collision occurs.
 - Stations A and B can compare $T_A$ and $T_B$ with $T_{prop}$.
   $T_A < T_B \iff T_A < T_{prop}$
 
-	1. A wins $\iff T_A < T_B$.
-	2. Losing station remains quiet until winner completes
+  1. A wins $\iff T_A < T_B$.
+  2. Losing station remains quiet until winner completes
        transmission.
-	3. For the sake of fairness, after completing transmission, the
-	   winner remains quiet for 2$T_{prop}$ time units to allow the loser
-	   to capture channel.
-	   
+  3. For the sake of fairness, after completing transmission, the
+     winner remains quiet for 2$T_{prop}$ time units to allow the loser
+     to capture channel.
+     
 ## Efficiency
 - For each packet sent, 2$T_{prop}$ time is required to coordinate
 access.
@@ -698,10 +698,10 @@ How do we avoid collisions in this circumstance?](img/wireless1.jpg)
 - Most widely deployed network layer protocol worldwide. 
 Emerged as a project made by the US and has grown exponentially. 
 - Defined in RFC (Request for Comments) 760 and 791.
-	- RFC 791 is based on editions of the ARPA Internet Protocol referred to as IPv4 
-		- 791 States that the IP performs tow basic functions: addressing and fragmentation
-			- **addressing**: assures unique addressability of hosts 
-			- **fragmentation**: splitting the messages into a number of IP packets to combat packet size constraints, and reassembly of packets at destination in order
+  - RFC 791 is based on editions of the ARPA Internet Protocol referred to as IPv4 
+    - 791 States that the IP performs tow basic functions: addressing and fragmentation
+      - **addressing**: assures unique addressability of hosts 
+      - **fragmentation**: splitting the messages into a number of IP packets to combat packet size constraints, and reassembly of packets at destination in order
 
 ## 8.1.1 IP Addressing/classes
 - In addition to physical addresses nodes have 32 bit IP Addresses
@@ -712,8 +712,8 @@ Emerged as a project made by the US and has grown exponentially.
 
 - D is used for multicasting and E for experiments. 
 - To reach a host on the internet, there are two levels. 
-	- First level: We reach the network using the first portion of our address
-	- Second level: We reach the host itself using the last portion of the address.
+  - First level: We reach the network using the first portion of our address
+  - Second level: We reach the host itself using the last portion of the address.
 - Addresses are broken into four bytes
 
 ![Breakdown of the five IP classes.](img/ip3.png){width=60%}
@@ -725,13 +725,13 @@ Emerged as a project made by the US and has grown exponentially.
 ![An example of subnetting.](img/ip4.png){width=60%}
 
 - from subnetting, we have three levels in the hierarchy
-	- Net-id (`135.17`) 
-	- Subnet-id (`12.22.23`)
-	- Host-id
+  - Net-id (`135.17`) 
+  - Subnet-id (`12.22.23`)
+  - Host-id
 - Subnetting provides routing boundaries for communications and routing protocol updates. 
 - Subnetting is facilitated by specifying a network mask along with the network address. 
 - Subnetting takes the single IP network address and allocates it to several physical networks referred to subnets. 
-	- Subnets should be near each other physically. 
+  - Subnets should be near each other physically. 
 
 ## 8.1.3 Subnet Masks
 - The mechanism to allow a network number to shared by numerous networks is subnet masking. 
@@ -742,9 +742,9 @@ Emerged as a project made by the US and has grown exponentially.
 
 - A subnet mask is used "hide" addresses.
 - A subnet mask separates the IP address into network and host addresses
-	- (`<network><host>`)
+  - (`<network><host>`)
 -  Subnetting further would divide the host part of an IP address into a subnet and host address. 
-	- (`<network><subnet><host>`)
+  - (`<network><subnet><host>`)
 
 ![Subnet masks.](img/ip6.png){width=60%}
 
@@ -770,11 +770,11 @@ Emerged as a project made by the US and has grown exponentially.
 - Operates on best effort delivery model, no guarantee of IP packets, no assurance of proper sequencing, and avoidance of duplicate delivery. 
 - All of the above is addressed by an upper layer transport protocol, such as TCP (Transmission Control Protocol)
 - IP is the vehicle for traffic management, based on IP based internets were designed to support delay insensitive applications
-	- Control congestion
-	- Provide low delay
-	- Provide high throughput
-	- Support QoS 
-	- Provide fair service 
+  - Control congestion
+  - Provide low delay
+  - Provide high throughput
+  - Support QoS 
+  - Provide fair service 
 
 ![A diagram of the IPv4 header.](img/ip8.png){width=60%}
 
@@ -789,8 +789,8 @@ Emerged as a project made by the US and has grown exponentially.
 
 ## 8.3 ARP (Address Resolution Protocol) 
 - enables hosts to build tables which can be managed either by an administrator or dynamically by the host. 
-	- performs updates approximately every 15 minutes
-	- performs queries that take advantage of broadcasting capabilities of local networks. 
+  - performs updates approximately every 15 minutes
+  - performs queries that take advantage of broadcasting capabilities of local networks. 
 
 ## 8.3.1 RARP (Reverse Address Resolution Protocol) 
 - an obsolete computer protocol where a client computer is used to request its internet protocol (IPv4) address from a computer network.
@@ -806,37 +806,37 @@ Emerged as a project made by the US and has grown exponentially.
 ![](img/ip10.png){width=50%}
 ![](img/ip11.png){width=50%}
 
- - How does DHCP work?
-	 - The host broadcasts a Discover Message in its network
-	 - The network servers respond with a Offer message
-	 - The host then selects one of the offers and broadcasts a request message. 
-	 - The network servers then acknowledges the message with a DHCP ACK and assigns IP addresses for a period of time with two thresholds. $T1, T2$ (usually, $T1 = T /2 and T2 = 7T /8$).
-	 - When $T1$ expires host attempts to extend lease by sending DHCP Request to same server. If accepted host also gets new values  $T$, $T0 = 1$, $T0 = 2$ If host does not receive DHCP ACK by time $T2$ then it broadcasts to any server in the network. If no ACK is received by time $T$ then host must relinquish old IP address and begin anew.
-	 - If a router or host is unable to sent a message, the IP will report an error/errors
-	 - IP has a companion protocol, called Internet Control Message Protocol (ICMP) that defines error messages
+- How does DHCP work?
+  - The host broadcasts a Discover Message in its network
+  - The network servers respond with a Offer message
+  - The host then selects one of the offers and broadcasts a request message. 
+  - The network servers then acknowledges the message with a DHCP ACK and assigns IP addresses for a period of time with two thresholds. $T1, T2$ (usually, $T1 = T /2 and T2 = 7T /8$).
+  - When $T1$ expires host attempts to extend lease by sending DHCP Request to same server. If accepted host also gets new values  $T$, $T0 = 1$, $T0 = 2$ If host does not receive DHCP ACK by time $T2$ then it broadcasts to any server in the network. If no ACK is received by time $T$ then host must relinquish old IP address and begin anew.
+  - If a router or host is unable to sent a message, the IP will report an error/errors
+  - IP has a companion protocol, called Internet Control Message Protocol (ICMP) that defines error messages
 
 ## 8.5 IPv6
 - built to provide more addressing capacity to meet current and future address requirements. 
-	 - main issues with IPv4
-		 - support for real time services
-		 - security support
-		 - autoconfiguration
-		 - enhanced routing functionality 
+   - main issues with IPv4
+     - support for real time services
+     - security support
+     - autoconfiguration
+     - enhanced routing functionality 
 
 ### 8.5.1 IPv6 Header
 - Designed to accommodate higher speeds with 128 bit addresses. 
-	- IPv4 can address up to 232 (= 4 billion) nodes. IPv6 can address up to 2128 = (232) 4 hosts.
-	-  IPv6 Format: An IPv6 packet has the form: IPv6-header, extension field, · · · , extension header, format level PDU (Protocol Data Unit).
-	- Priority Field: defines types of traffic
-	- Flow Labels: e.g. multimedia traffic consists of audio flow, video flow, data flow.
+  - IPv4 can address up to 232 (= 4 billion) nodes. IPv6 can address up to 2128 = (232) 4 hosts.
+  -  IPv6 Format: An IPv6 packet has the form: IPv6-header, extension field, · · · , extension header, format level PDU (Protocol Data Unit).
+  - Priority Field: defines types of traffic
+  - Flow Labels: e.g. multimedia traffic consists of audio flow, video flow, data flow.
 
 ![IPv6 header.](img/ip12.png){width=70%}
 
 - No classes are being used, which leaves large addresses chunks unaddressed which allow for future growth. 
-	- NSAP used for ISO
-	- IPX for Novell
-	- Link local and Site local enable address construction without concern for global addresses (useful for autoconfigurations)
-	- Multicast is for multicast addresses, by zero extending with a byte of 0s one assigns IPv4-compatible and IPv4-mapped IPv6 addresses.
+  - NSAP used for ISO
+  - IPX for Novell
+  - Link local and Site local enable address construction without concern for global addresses (useful for autoconfigurations)
+  - Multicast is for multicast addresses, by zero extending with a byte of 0s one assigns IPv4-compatible and IPv4-mapped IPv6 addresses.
 
 ![IPv6 header.](img/ip13.png){height=32%}
 
@@ -844,9 +844,9 @@ Emerged as a project made by the US and has grown exponentially.
 
 ### 8.5.2 Assigning Addresses
 - Three types of addresses:
-	- Unicast
-	- Anycast (different interfaces)
-	- Multicast (different nodes)
+  - Unicast
+  - Anycast (different interfaces)
+  - Multicast (different nodes)
 - Hop-by-Hop Options Header: carries optional information that must be examined (like next header, header extension length, options)
 - Fragment Header: only done by source nodes and not by routers. These nodes perform a path discovery algorithm to determine smaller max transmission unit. 
 - Routing Header: contains a list of one or more intermediate nodes to be visited along the way. Intermediate nodes that should be visited like Next Header, Header Extension Length, Routing Type,
@@ -859,8 +859,8 @@ Emerged as a project made by the US and has grown exponentially.
 - 001 prefix used for global unicast addressing.
 - 010 prefix used for IPv6 provider based address. Here, registry IDs are provided as common identifiers. 
 - IPv6 and DHCP provides s IPv4 autoconfiguration.
-	1. obtain correct subnet address prefix (through a router)
-	2. IPv6 provides for anycast addresses: selects one of a set of any. Also multicast and security provided.
+  1. obtain correct subnet address prefix (through a router)
+  2. IPv6 provides for anycast addresses: selects one of a set of any. Also multicast and security provided.
 
 ### 8.5.4 Neighbour Discovery
 - Allows a node to discover subnet addresses on which the IPv6 node is connected with.
@@ -875,9 +875,9 @@ Emerged as a project made by the US and has grown exponentially.
 - China and the Federal U.S. Government are also starting to require support for IPv6 on their equipment.
 - Modern cellular telephones also mandate IPv6 operation and deprecate IPv4 as an optional capability
 - As of 2018
-	- Over 25% of all Internet-connected networks advertise IPv6 connectivity.
-	- 49 countries deliver more than 5% of traffic over IPv6, with new countries joining all the time.
-	- In 24 countries IPv6 traffic exceeds 15%
+  - Over 25% of all Internet-connected networks advertise IPv6 connectivity.
+  - 49 countries deliver more than 5% of traffic over IPv6, with new countries joining all the time.
+  - In 24 countries IPv6 traffic exceeds 15%
 
 # TCP
 
@@ -893,6 +893,14 @@ Emerged as a project made by the US and has grown exponentially.
   - control resource allocation
 
 ## How it Works (Sliding Window)
+
+- **byte oriented**
+  - sender writes bytes into
+  - receiver reads from
+- variable \acro{M}ax \acro{S}egment \acro{S}ize
+  - decides when it has enough bytes $(=MSS)$
+  - or sending process requests packets
+  - timer can trigger transmissions
 
 ### Connecting
 
@@ -918,9 +926,89 @@ Emerged as a project made by the US and has grown exponentially.
 - B responds with its own FIN bit
 - A acknowledges
 
+### Sliding Window (Important)
+
+- **credit allocation scheme**
+- each byte transmitted has a sequence number
+- sender includes SEQ\# of first byte
+- receiver acknowledges
+  - $(A=i,W=j)$
+  - all bytes up to $i-1$ are acknowledged
+  - next byte has SEQ\# $i$
+  - grant permission to send next $i,i+1,\ldots,j-1$ bytes
+- keep track of a congestion window $w$ locally
+  - if $W < w$, increase it by sending out a packet
+  - if $W \ge w$, wait for ACK and reduce $W$ (and increase $w$)
+
+### Permissions
+
+- **no such thing** as a NAK
+  - instead we use a timer
+  - if timer expires, we must retransmit
+
 ## How it Builds Statistics
 
+### \acro Average \acro Round \acro Trip \acro Time
+
+- $RTT(i) =$ round trip time for $i$th segment
+- $ARTT(k) =$ **average** round trip time for first $k$ segments
+\begin{align*}
+ARTT(k+1) &= \frac{1}{k+1}\sum_{i=1}^{k+1}RTT(i)
+\end{align*}
+- observe we have coefficient $\frac{1}{k+1}$ for all terms
+- or, recursively
+\begin{align*}
+ARTT(k+1) &= \frac{k}{k+1}ARTT(k) + \frac{1}{k+1}RTT(K+1)
+\end{align*}
+- observe we have coefficient $\frac{k}{k+1}$ and $\frac{1}{k+1}$
+
+### \acro Smoothed \acro Round \acro Trip \acro Time
+
+- $SRTT(k) =$ smoothed RTT estimate
+- defined by recursion
+\begin{align*}
+SRTT(K=1) &= \alpha SRTT(k) + (1-\alpha)RTT(k+1)
+\end{align*}
+- $\alpha$ futher from $k \implies$ less weight assigned
+
+### Traffic Variance
+
+- calculate error then calculate standard deviation
+\begin{align*}
+AERR(k+1) &= RTT(k+1) - ARTT(k)\\
+ADEV(k+1) &= \frac{1}{k+1}\sum_{i=1}^{k+1}{\vert AERR(i)\vert}\\
+\end{align*}
+
+### RTT Variance Estimation
+
+- Jacobson's
+  - works for no retransmissions
+- Exponential RTO Backoff
+  - good for when a retransmission occurs
+- Karn's (best of both worlds)
+  - do not use measured RTT for retransmitted segments
+  - calculate backoff RTO when retransmission occurs
+  - use backoff RTO until we get an ACK for a new segment
+    - then start using Jacobson's again
+
 ## Equilibrium Model
+
+- cycle of increase and decrease
+- *packet loss* means *congestion*
+  - inform source to slow down
+- gradually increase rate again until told to slow down
+- we increase window with a function $I(w)$
+  - probability $1 - p$ where $p$ is packet loss probability
+- we decrease with a function $D(w)$
+  - probability $p$ where $p$ is packet loss probability
+- so we have
+\begin{align*}
+E[Change] &= (1- p)I(w) - pD(w)
+\end{align*}
+- *equilibrium* is when
+\begin{align*}
+I(w)(1-p) &= D(w)p
+\end{align*}
 
 \newpage
 
