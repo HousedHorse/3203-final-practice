@@ -366,6 +366,7 @@ ARQ protocol.](img/saw3la.png){height=30%}
 - in *point-to-point* networks we have signal as a function of one transmitted signal
 - in *shared* networks, we may have **more than one** transmission contributing to a signal
 
+<!--
 ## MAC Protocol
 
 ## Uncoordinated Access Control
@@ -379,20 +380,168 @@ ARQ protocol.](img/saw3la.png){height=30%}
 ### Binary Countdown
 
 ### Bitmap
+-->
 
 # Wireless
 
-## Cellular
+## Dynamic
 
-## Ad Hoc
+- Wireless networks is a group of nodes in range of each other
+- BBS (Basic Service set) is a group of nodes
+- BSA (Basic service area) is the geographic area covered by a BSS
+- Each BSA has an AP (access point)
+- ESS (Extended service set) is used to extend a set of BSS
+- For a node to join an ESS it must associate with an AP
 
-### UDG
+![Let A, B, C be a unit distant graph and D be in the intersection of the three unidirectional coverage.
+How do we avoid collisions in this circumstance?](img/wireless1.jpg)
 
-### Compass Routing
+## Spread Spectrum
 
-### Face Routing
+- Spread information over wider bandwidth to make jamming or interception harder
+- Two types of spread techniques
+  - Direct Sequencing
+  - Frequency Hopping
+- We do this to hide / encrypt signal avoid noise and use independent same bandwidth (CDMA)
+  DSSS (Direct Sequence Spread Spectrum)
+- Let n be the number of bits we transmit at a time
+- Sender randomly generates $b$ bits, $b_1,b_2,\ldots,b_n$. Each bit gets XOR by $b$ the original bit
+- Implemented in physical layer
+- Not a multi access method
+- XOR bit data by chip
+
+## FHSS (Frequency Hopping Spread Spectrum)
+
+- Let B be the number of bits and n being the number of channels to hop
+- Hops frequency sending B/n bits on each frequency (loop once all n channels visited)
+- Time user stays in a band in called dwell time
+
+## CDMA: Code Division Multiple Access
+- Multiplexing (Allowing multiple users to communicate over the same time on the same channel)
+- Break each bit into k chips according to a fixed pattern called the user’s code
+- New channel has chip data rate (k * R) chips per second.
+
+## Sharing Methods Over a Channel With CDMA
+
+- Exclusive FDMA or TDMA
+- Simultaneous use of FDMA and TDMA
+- Calls are distinguished along the “code” dimension
+- All calls may share the same frequency since each transmission s assigned a unique code
+- Analogy is a cocktail party which people talk in different languages at the same time. Now the issue is controlling volume.
+- Example if chip code is (1, -1, -1, 1, -1, 1)
+  - Send 1 bit send the chip code
+  - Send 0 bit send the compliment of the chip code which is (-1, 1, 1, -1, 1, -1)
+- Each user in U owns a specific bit pattern consisting of n bits (b1,…,bn)
+
+## Selecting Patterns for CDMA
+
+- Let $\vec{U}$ be assigned a vector which is either -1 or 1 for an $n$ generated bit sequence.
+- Let $\bar{u} = (-u_1,\ldots,-u_n) be components of \vec{U}$
+- Let $\vec{u} = (u_1,\ldots,u_n)$
+- Let the inner product of $\langle u, \rangle> = 1$ and $\langle u, \bar{u}\rangle = -1$
+- Transmission: Transmit bit 1 user U send its vector u, transmit 0 send compliment u
+- Example to send 1011 given A has code 00011011 we send a(compliment a)aa etc.
+
+## Decoding CDMA
+- Compute $\langle u, \sum_{v \in S}(Bv)\rangle$
+
+## Collision Avoidance
+- B and C will collide if they transmit at the same time
+- A can reach B but is unaware of C
+- C can reach B but is unaware of A
+
+![Collision avoidance in action.](img/wireless2.jpg)
+
+##  Exposed Node
+- Nodes can transmit but other nodes in the range of that given node can hear that node
+
+##  Communication Paths in Wireless
+- Each node can propagate a message to the next for instance given A,B,C,D,E,F,G and each node is in range of the next we can form a path from A to G even if A is not in range of G.
+- Asymmetry in networks are when we have to nodes which one node can reach the other but not vice versa.
+
+## Attenuation
+- The farther away a device is from a base station the more objects in its way
+
+##  Power Levels
+- TPC (Transmission Power Control) Algorithm
+- Attempts to equalize power transmitted to received signal powers
+
+##  Interference
+- When two signals over lap transmissions will be coupled
+
+##  Signal to Interference Ratio (SIR)
+- Device tells base station to lower or increase power of transmission
+
+##  MACA (Multiple Access Collision Avoidance) Algorithm
+- Sender sends (RTS) request to send which includes how long it wants to use the medium.
+- Receiver replies with CTS (Clear to send)
+- If CTS not received after a timeout then Back off algorithm is executed
+- Receiver sends ACK after receiving
+- All other nodes must wait for ACK before transmitting
+
+##  Nodes are not all equal. In a distributed system node transmit over access points
+- Scanning for Access Points
+- Station sends Probe frame
+- If AP is in range respond with Probe response frame
+- Station selects AP and responds with Association Request frame
+- Access Point responds with Association Response frame
+
+## IEEE 802.11: Framers
+
+- Three types of frames
+  - MF (Management Frames): association, disassociation, timing, synchronization, authentication and de authentication
+  - CF (Control Frames): Used for Handshaking and positive ACKs during an exchange
+  - DF (Data Frames): Used for data for data transmission
 
 ## Bluetooth
+
+- Piconets
+- Star network
+- Master is the central node slave nodes connect to master
+- Communication is strictly Master -> Slave or Slave to Master
+- All masters have at least 1 and at most 7 slaves
+- Piconets can be enlarged to form scatter nets
+- Master and slave can switch by using different frequencies
+- Scatter nets care multiple Pico nets connected by bridges
+
+## Scatter Net
+
+- Network of Pico nets
+- Consists of Masters and Slaves (Bridge or Pure)
+- Two Masters can share only a single slave (Bridge)
+- Piconet can only have at most 7 slaves
+- Each bridge may only connect two Pico nets
+
+## Bluetooth establishing links
+
+- Start
+- Synchronization
+- Discovery
+- Paging
+- Connection established
+
+## Discovery Delay Procedure
+
+- To support spontaneous connectivity inquiry is used and connection are established based on information exchange
+- Application sets Bluetooth into inquiry mode then sends inquiry msg to probe for other nodes
+- Other Bluetooth devices will only listen unless set to inquiryScan
+- Collision Avoidance which is the method used to avoid collision which uses some randomness
+
+## Connection Establishment
+
+- Takes several seconds
+- Follows uniform distribution between inquiry and inquiryScan
+
+## Bluetooth frames
+
+- 72 Access Code 54 Header 0-2744 Data
+- Header broken down is 3 Addr 4 Type 1 F 1 A 1 S 8 Checksum
+
+## Broadband Wireless
+
+![The broadband wireless IEEE protocol stack.](img/wireless3.jpg)
+
+\FloatBarrier
 
 # GPS
 
@@ -412,21 +561,190 @@ ARQ protocol.](img/saw3la.png){height=30%}
 
 # IP
 
-## IPv4
+## 8.1 IP Networks
+- Most widely deployed network layer protocol worldwide. 
+Emerged as a project made by the US and has grown exponentially. 
+- Defined in RFC (Request for Comments) 760 and 791.
+	- RFC 791 is based on editions of the ARPA Internet Protocol referred to as IPv4 
+		- 791 States that the IP performs tow basic functions: addressing and fragmentation
+			- **addressing**: assures unique addressability of hosts 
+			- **fragmentation**: splitting the messages into a number of IP packets to combat packet size constraints, and reassembly of packets at destination in order
 
-### Classes of Address
+## 8.1.1 IP Addressing/classes
+- In addition to physical addresses nodes have 32 bit IP Addresses
+- Has a two level hierarchy consisting of the net ID and the Host ID which identifies the network the host is connected to. 
+- There are five classes of addresses: A, B, C, D, E. 
 
-### Subnets
+![Division of bits in class A, B, and C IP classes.](img/ip2.png){width=30%}
 
-### Subnet Masks
+- D is used for multicasting and E for experiments. 
+- To reach a host on the internet, there are two levels. 
+	- First level: We reach the network using the first portion of our address
+	- Second level: We reach the host itself using the last portion of the address.
+- Addresses are broken into four bytes
 
-## IPv6
+![Breakdown of the five IP classes.](img/ip3.png){width=60%}
 
-## DHCP
+## 8.1.2 Subnetting
+- Is the solution to the two level hierarchy where addresses cannot be grouped into a "less flat" scheme
+- Only the router should be aware of the subnetting. 
 
-## ARP
+![An example of subnetting.](img/ip4.png){width=60%}
 
-### RARP
+- from subnetting, we have three levels in the hierarchy
+	- Net-id (`135.17`) 
+	- Subnet-id (`12.22.23`)
+	- Host-id
+- Subnetting provides routing boundaries for communications and routing protocol updates. 
+- Subnetting is facilitated by specifying a network mask along with the network address. 
+- Subnetting takes the single IP network address and allocates it to several physical networks referred to subnets. 
+	- Subnets should be near each other physically. 
+
+## 8.1.3 Subnet Masks
+- The mechanism to allow a network number to shared by numerous networks is subnet masking. 
+- A subnet number is where all hosts on the same network have the same subnet number. 
+- Subnet masks introduce another level hierarchy into IP-addressing, where the Address now has three parts: network part, subnet part, and host part.
+
+![Subnet masks.](img/ip5.png){width=60%}
+
+- A subnet mask is used "hide" addresses.
+- A subnet mask separates the IP address into network and host addresses
+	- (`<network><host>`)
+-  Subnetting further would divide the host part of an IP address into a subnet and host address. 
+	- (`<network><subnet><host>`)
+
+![Subnet masks.](img/ip6.png){width=60%}
+
+- Masking extracts the address of the physical network from an IP address.
+- If there is no subnet masking, it'll extract the networks address from the IP address. If there is a subnet division, it will extract the subnet address from the IP address.
+
+![Subnet masks.](img/ip7.png){width=60%}
+
+- Hosts are configured with an address and the subnet mask. 
+- The bitwise And of these two numbers defines the subnet number of the given host. 
+
+\FloatBarrier
+
+1. H1 forwards to H2
+1. H1 calculates AND of H2’s subnet address (`128.96.34.139`) with subnet mask (`255.255.255.128`)
+   i) If result is equal to H1’s Subnet Number (`128.96.34.128`)
+      - then it is delivered to NextHop for H2 of its forwarding table
+   i) If it is not equal to H1’s Subnet Number
+      - then packet is forwarded to H1’s default router.
+
+## 8.2 IPv4 
+- A connectionless protocol for use on packet-switched Link Layer networks
+- Operates on best effort delivery model, no guarantee of IP packets, no assurance of proper sequencing, and avoidance of duplicate delivery. 
+- All of the above is addressed by an upper layer transport protocol, such as TCP (Transmission Control Protocol)
+- IP is the vehicle for traffic management, based on IP based internets were designed to support delay insensitive applications
+	- Control congestion
+	- Provide low delay
+	- Provide high throughput
+	- Support QoS 
+	- Provide fair service 
+
+![A diagram of the IPv4 header.](img/ip8.png){width=60%}
+
+### IPv4 Header
+- IP's with no options are 20 Bytes, **IHL** (Header Length) is in 32-bit words
+- TOS (Type of Service): Guidance on selecting next hops and relative allocation of router resources. 
+- TOS Subfields: provide route selection, subnetwork service, queuing discipline.
+- Procedence Subfield: indicates the degree of urgency from highest level to lowest level
+- IPv4 options: Security, Timestamping, Source routing, Route Recording.
+
+\FloatBarrier
+
+## 8.3 ARP (Address Resolution Protocol) 
+- enables hosts to build tables which can be managed either by an administrator or dynamically by the host. 
+	- performs updates approximately every 15 minutes
+	- performs queries that take advantage of broadcasting capabilities of local networks. 
+
+## 8.3.1 RARP (Reverse Address Resolution Protocol) 
+- an obsolete computer protocol where a client computer is used to request its internet protocol (IPv4) address from a computer network.
+- All the protocol will have is the link layer or hardware address
+- The client will broadcast the request and does not have prior knowledge of the network. 
+
+## 8.4 DHCP (Dynamic Host Configuration Protocol)
+- DHCP Is a protocol that automates the process where before the host can send packets, they'll need to know the address of a default router. This would be alot of work if done directly or manually by hosts. 
+- Saves administrators from having to walk to each host and the information from this protocol is stored in a table.
+
+![DHCP protocol application.](img/ip9.png){width=70%}
+
+![](img/ip10.png){width=50%}
+![](img/ip11.png){width=50%}
+
+ - How does DHCP work?
+	 - The host broadcasts a Discover Message in its network
+	 - The network servers respond with a Offer message
+	 - The host then selects one of the offers and broadcasts a request message. 
+	 - The network servers then acknowledges the message with a DHCP ACK and assigns IP addresses for a period of time with two thresholds. $T1, T2$ (usually, $T1 = T /2 and T2 = 7T /8$).
+	 - When T1 expires host attempts to extend lease by sending DHCP Request to same server. If accepted host also gets new values  T, T0 1 , T0 2 If host does not receive DHCP ACK by time T2 then it broadcasts to any server in the network. If no ACK is received by time T then host must relinquish old IP address and begin anew.
+	 - If a router or host is unable to sent a message, the IP will report an error/errors
+	 - IP has a companion protocol, called Internet Control Message Protocol (ICMP) that defines error messages
+
+## 8.5 IPv6
+- built to provide more addressing capacity to meet current and future address requirements. 
+	 - main issues with IPv4
+		 - support for real time services
+		 - security support
+		 - autoconfiguration
+		 - enhanced routing functionality 
+
+### 8.5.1 IPv6 Header
+- Designed to accommodate higher speeds with 128 bit addresses. 
+	- IPv4 can address up to 232 (= 4 billion) nodes. IPv6 can address up to 2128 = (232) 4 hosts.
+	-  IPv6 Format: An IPv6 packet has the form: IPv6-header, extension field, · · · , extension header, format level PDU (Protocol Data Unit).
+	- Priority Field: defines types of traffic
+	- Flow Labels: e.g. multimedia traffic consists of audio flow, video flow, data flow.
+
+![IPv6 header.](img/ip12.png){width=70%}
+
+- No classes are being used, which leaves large addresses chunks unaddressed which allow for future growth. 
+	- NSAP used for ISO
+	- IPX for Novell
+	- Link local and Site local enable address construction without concern for global addresses (useful for autoconfigurations)
+	- Multicast is for multicast addresses, by zero extending with a byte of 0s one assigns IPv4-compatible and IPv4-mapped IPv6 addresses.
+
+![IPv6 header.](img/ip13.png){height=32%}
+
+\FloatBarrier
+
+### 8.5.2 Assigning Addresses
+- Three types of addresses:
+	- Unicast
+	- Anycast (different interfaces)
+	- Multicast (different nodes)
+- Hop-by-Hop Options Header: carries optional information that must be examined (like next header, header extension length, options)
+- Fragment Header: only done by source nodes and not by routers. These nodes perform a path discovery algorithm to determine smaller max transmission unit. 
+- Routing Header: contains a list of one or more intermediate nodes to be visited along the way. Intermediate nodes that should be visited like Next Header, Header Extension Length, Routing Type,
+- Destinations Options Header: carries optional information. 
+
+### 8.5.3 Notation 
+- hexadecmial digits are used, represented in eight 16-bit blocks. 
+- One set of contiguous 0s can be omitted: `block1::block7:block8`
+- An IPv4-mapped address, like `128.33.87.51` is now written as: `00FF:128.33.87.51`
+- 001 prefix used for global unicast addressing.
+- 010 prefix used for IPv6 provider based address. Here, registry IDs are provided as common identifiers. 
+- IPv6 and DHCP provides s IPv4 autoconfiguration.
+	1. obtain correct subnet address prefix (through a router)
+	2. IPv6 provides for anycast addresses: selects one of a set of any. Also multicast and security provided.
+
+### 8.5.4 Neighbour Discovery
+- Allows a node to discover subnet addresses on which the IPv6 node is connected with.
+- Automatically identifies routers on the subnet
+- This process allows each router to periodically send advertisements on each of its configured subnets, showing their IP address, ability to provide default gateway functionality, link layer address, networks served on the link and valid address lifetime. 
+
+### 8.5.6 IPv6 Deployment / Classless Inter-Domain Routing (CIDR)
+- Only 3% domain names and 12% of networks have IPv6 protocol support.
+- Implemented on all major operation systems in use in commercial, business, and home consumer environments.
+- IoT (Internet of Things) is giving a significant boost to IPv6.
+- First major use in 2008 summer Olympics
+- China and the Federal U.S. Government are also starting to require support for IPv6 on their equipment.
+- Modern cellular telephones also mandate IPv6 operation and deprecate IPv4 as an optional capability
+- As of 2018
+	- Over 25% of all Internet-connected networks advertise IPv6 connectivity.
+	- 49 countries deliver more than 5% of traffic over IPv6, with new countries joining all the time.
+	- In 24 countries IPv6 traffic exceeds 15%
 
 # TCP
 
@@ -502,8 +820,25 @@ Slot|Station
    8|g      
    9|h      
 
-
 ## <!-- 4 -->
+
+![](test/q4.png){width=80%}
+
+###
+
+![](test/q4.1.png){width=80%}
+
+ Face|List of Edges Being Traversed
+----:|:----------------------------
+$F_1$|2, 1, 3                        
+$F_3$|13                           
+$F_5$|14, 15                        
+
+###
+
+![](test/q4.2.png){width=80%}
+
+
 
 ## <!-- 5 -->
 
