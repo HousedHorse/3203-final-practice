@@ -1721,10 +1721,66 @@ $F_5$|14, 15
 
 ![](test/q4.2.png){width=80%}
 
-
+\begin{center}
+4, 9, 10, 11, 14, 15
+\end{center}
 
 ## <!-- 5 -->
 
+![](test/q5.png){width=80%}
+
+### A
+
+- **valid**
+  - all piconets have slavecount $\le 7$
+  - no adjacent masters
+  - no adjacent slaves
+  - bridge connects **two** piconets by their master nodes
+
+### B
+
+- **invalid**
+- the good
+  - all piconets have slavecount $\le 7$
+  - no adjacent masters
+  - no adjacent slaves
+- the bad
+  - bridge connects **three** piconets by their master nodes
+  - should be **TWO**
+
 ## <!-- 6 -->
 
+![](test/q6.png){width=80%}
+
+Define event $A$ is both stations select same frequency.
+\begin{align*}
+P(A) &= n\frac{1}{n}\frac{1}{n}\\
+&= \frac{1}{n}
+\end{align*}
+
 ## <!-- 7 -->
+
+![](test/q7.png){width=80%}
+
+###
+
+Give the values $x_1,x_2,x_3$.
+\begin{align*}
+x_1 &= 1 + (-1)^1 = 1 - 1 = 0\\
+x_2 &= 2 + (-1)^2 = 2 + 1 = 3\\
+x_3 &= 3 + (-1)^3 = 3 - 1 = 2
+\end{align*}
+
+###
+
+![](test/q7.2.png){width=80%}
+
+In order for the graph to be connected, we need some node with an x-coordinate of 1 at a bare minimum.
+
+Is it possible to have such an x-coordinate?
+\begin{align*}
+1 &= i + (-1)^i\\
+i &= 0
+\end{align*}
+
+Our $i \in \{1,2,\ldots,n\} \implies i\ne 0$. Therefore it is not a connected graph.
