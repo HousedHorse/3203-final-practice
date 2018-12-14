@@ -310,10 +310,10 @@ output:
 
 \FloatBarrier
 
-#### Frame Errors
-
 ![A lost frame error in the  Stop and Wait
 ARQ protocol.](img/saw2lf.png){height=30%}
+
+#### Frame Errors
 
 - frame is damaged
   - one or more bits have been altered
@@ -351,36 +351,168 @@ ARQ protocol.](img/saw3la.png){height=30%}
 ## LANs
 
 - two types
-  - **switched**
+  - *switched*: interconnection by means of transmission
     - lines, multiplexes, switches
     - hierarchical addressing scheme
     - routing tables
-  - **broadcast**
+  - *broadcast*: information received by all users
     - no routing
     - flat addressing scheme
     - \acro{M}edium \acro{A}ccess \acro{C}ontrol to coordinate transmissions
-    - **preferred over switched** due to **simplicity**
+    - *preferred over switched* due to *simplicity*
 
 ## The Problem with Shared Channels
 
-- in *point-to-point* networks we have signal as a function of one transmitted signal
-- in *shared* networks, we may have **more than one** transmission contributing to a signal
+- in point-to-point networks, received signal is a function of one transmitted signal
+- In broadcast networks a single transmission medium is shared.
+  Received signal is a function of possibly more than one
+  transmitted signal
 
-<!--
+- How do we mediate access to shared channels?
+	-Medium Access Control (MAC) sublayer between Physical and
+	 DLC (Data Link Control) is used to solve this problem
+
 ## MAC Protocol
+- *Centralized*: A distinguished node (master) makes access
+                   decisions for the remaining nodes (slaves).
+  - Centralized schemes are too dependent on master failure and
+    generally less efficient.
+- *Distributed*: All nodes are equivalent and the access decision
+                     is derived together in a distributed fashion.
 
-## Uncoordinated Access Control
+## How do you share a medium?
+- *Static Partitioning Schemes*: Partition transmission
+                                   medium into separate dedicated channels.
+- *MAC Schemes*: Dynamic and on-demand. However, must
+                     minimize collisions.
+					 
+## Some examples: Types of Networks
+- Satellite channels (wireless)
+  Iridium network
+- Multitapped bus (wired):
+  Ethernet
+- Star topology with hub (wired)
+  Fast Ethernet
+- Packet radio networks (wireless)
+  Ad Hoc, Bluetooth, Piconets, Wireless networks
+- Cellular networks (wireless)
+	  Cell phones, Wireless LANs
 
-## Ethernet
+![Some example of network topologies.](img/topologiesExample.png)
+ 
+## How Do You Mediate Access?
+- Given that there are many users, several issues must be taken into account.
+	1. Give access to each user that wants to communicate.
+	2. Decide who talks first.
+	3. Be fair to all.
+ 
+- Let's work with the case of 2 hosts
+	- We need to address the following
+		1. Measure the Propagation Time
+		2. Coordinate access.
+		3. Select a winner.
+		
+## Measuring the Propagation Time(2 hosts)
+- Let $T_{prop}$ be the bit-propagation time of a channel.
+- Let d = “distance between the two stations” and v = “the speed of the medium”
 
-## Coordinated Access
+Then we have: $$T_{prop} = \frac{d}{v}$$
 
-### Tree Algorithm
+- Both stations can measure $T_{prop}$, can use ping
+- So we can assume they both have the same value for $T_{prop}$.
 
-### Binary Countdown
+- $T_{prop}$ is also $$\frac{RTT}{2}$$
 
-### Bitmap
--->
+## Access Coordination Algorithm(2 hosts)
+
+\begin{lstlisting}
+A (B) listens to channel
+if channel not busy:
+  A (B) transmits packet
+  A (B) continues to listen to channel
+  if B (A) has not began transmission "by time $T_{prop}$":
+    A (B) is certain packet will reach B (A)
+  else:
+    A (B) detects collision and retransmits.
+\end{lstlisting}
+
+- If user A is to be able to detect a collision it must occupy
+the channel for a time period of 2$T_{prop}$ time units.
+
+- Note: Since both stations can measure $T_{prop}$ , at the latest, by
+time 2$T_{prop}$ , A will know if a collision occurred
+
+- Stations measure time $T_A$ ($T_B$) from the beginning of (their own)
+packet transmission to the time a collision occurs.
+
+### Conditions for the winner
+- Stations A and B can compare $T_A$ and $T_B$ with $T_{prop}$.
+  $T_A < T_B \iff T_A < T_{prop}$
+
+	1. A wins $\iff T_A < T_B$.
+	2. Losing station remains quiet until winner completes
+       transmission.
+	3. For the sake of fairness, after completing transmission, the
+	   winner remains quiet for 2$T_{prop}$ time units to allow the loser
+	   to capture channel.
+	   
+## Efficiency
+- For each packet sent, 2$T_{prop}$ time is required to coordinate
+access.
+- If bit rate is R and packet length is L then channel efficiency is
+\begin{align*}
+&\phantom{=}\frac{L}{L+2T_{prop}}\\
+&= \frac{1}{1 + \frac{2T_{prop}}{L}}\\
+&= \frac{1}{1 + 2a} && \text{where } a = \frac{T_{prop}}{L}
+\end{align*}
+
+- small $a \implies$ more efficient channel
+
+*Note* The prof also gave us that overhead: $$\frac{L+2T_{prop}}{L}$$
+
+$$a=\frac{dR}{vL}$$ 
+
+<!-- refer to performanceTable.png -->
+![Comparing performance speeds of networks.](img/performanceTable.png)
+
+## Scaling Ethernet
+- In Ethernet, where there is broadcasting type of message
+passing, every node is always listening to the network and may
+initiate transmission only when the network is silent.
+
+- The network is a broadcast media in which every node can hear
+every other node.
+
+- In order for two nodes not to send data simultaneously in a
+quiet network, nodes must listen to their transmissions, and if
+the data a node reads from the Ethernet does not match the
+data it is placing on the Ethernet, it knows that a collision has
+occurred.
+
+- Whenever a collision occurs, a node stops sending and waits a
+random time before attempting to retransmit.
+
+## Limitations of Ethernet: Distance Factor
+- In a 10 Mb Ethernet, the minimum packet size is 64 bytes for a
+5 km cable.
+
+- In a 1 Gb Ethernet, the minimum packet size is about 6400
+bytes.
+
+- From an architectural perspective 6400 bytes is too large a
+number for the minimum packet size.
+
+## Other Issues
+- Medium access protocol is very technology dependent!
+- Can we be sure that measurements are accurate?
+- Even “Echo” measurements may differ for two hosts!
+
+Nevertheless, resulting protocols are realistic and efficient because
+they are on-line
+
+![Comparison of peer-to-peer and MAC protocols.](img/comparisonPeerMac.png)
+
+Some LAN Devices: Host, network bridge, network hub, network transceiver
 
 # Wireless
 
@@ -479,12 +611,13 @@ How do we avoid collisions in this circumstance?](img/wireless1.jpg)
 - Receiver sends ACK after receiving
 - All other nodes must wait for ACK before transmitting
 
-##  Nodes are not all equal. In a distributed system node transmit over access points
-- Scanning for Access Points
-- Station sends Probe frame
-- If AP is in range respond with Probe response frame
-- Station selects AP and responds with Association Request frame
-- Access Point responds with Association Response frame
+##  Nodes are NOT All Equal
+- In a distributed system node transmit over access points
+  - Scanning for Access Points
+  - Station sends Probe frame
+  - If AP is in range respond with Probe response frame
+  - Station selects AP and responds with Association Request frame
+  - Access Point responds with Association Response frame
 
 ## IEEE 802.11: Framers
 
@@ -678,7 +811,7 @@ Emerged as a project made by the US and has grown exponentially.
 	 - The network servers respond with a Offer message
 	 - The host then selects one of the offers and broadcasts a request message. 
 	 - The network servers then acknowledges the message with a DHCP ACK and assigns IP addresses for a period of time with two thresholds. $T1, T2$ (usually, $T1 = T /2 and T2 = 7T /8$).
-	 - When T1 expires host attempts to extend lease by sending DHCP Request to same server. If accepted host also gets new values  T, T0 1 , T0 2 If host does not receive DHCP ACK by time T2 then it broadcasts to any server in the network. If no ACK is received by time T then host must relinquish old IP address and begin anew.
+	 - When $T1$ expires host attempts to extend lease by sending DHCP Request to same server. If accepted host also gets new values  $T$, $T0 = 1$, $T0 = 2$ If host does not receive DHCP ACK by time $T2$ then it broadcasts to any server in the network. If no ACK is received by time $T$ then host must relinquish old IP address and begin anew.
 	 - If a router or host is unable to sent a message, the IP will report an error/errors
 	 - IP has a companion protocol, called Internet Control Message Protocol (ICMP) that defines error messages
 
@@ -748,7 +881,42 @@ Emerged as a project made by the US and has grown exponentially.
 
 # TCP
 
+- based on the end-to-end connectivity paradigm
+  - functions should **not** be implemented at **lower system levels** unless they can be
+    **correctly implemented** at that level
+- main features:
+  - sliding window
+  - variable RTTs
+  - packets can be out of order
+  - connections learn about each other's resources
+  - monitor congestion
+  - control resource allocation
+
 ## How it Works (Sliding Window)
+
+### Connecting
+
+- A sets SYN bit and register a SEQ\#
+- B sets SYN bit and registers a SEQ\#
+  - acknowledges with A's SEQ\# + 1
+- A acknowledges with B's SEQ\# + 1
+
+![The three-way handshake of a TCP connection.](img/tcp1.png){width=80%}
+
+- this is important because
+  - A informs B of its starting number
+  - B acknowledges and informs A of its own starting number
+  - A acknowledges B's starting number
+- in this way, they can anticipate what the other will do
+- a timer makes sure that if an expected response is not received, they will retry
+
+### Disconnecting
+
+![Closing a TCP connection.](img/tcp2.png){width=80%}
+
+- A sets FIN bit with SEQ\#
+- B responds with its own FIN bit
+- A acknowledges
 
 ## How it Builds Statistics
 
