@@ -676,21 +676,648 @@ How do we avoid collisions in this circumstance?](img/wireless1.jpg)
 
 \FloatBarrier
 
-# GPS
+# GPS (Global Positioning System)
+
+## Localization 
+ - **Geographic location** 
+   - defined by two coordinates 
+     - **longitude** 
+     - **latitude**
+ - **Geographic localization** refers to **algorithms for** finding your **geographic location**
+ - **Triangulation**: process of
+   - **determining location** of a point
+    - **comparing angles** to it from *known points*
+   - **SOHCAHTOA**
+<!--insert GPS_4, and GPS_5 here-->
+
+![](img/GPS_4.png)
+
+- we have
+\begin{align*}
+d &= \frac{x}{\tan \alpha} + \frac{x}{\tan \beta}\\
+d &= x\left(\frac{1}{\tan \alpha} + \frac{1}{\tan \beta}\right)\\
+x &= d\frac{1}{\left(\frac{1}{\tan \alpha} + \frac{1}{\tan \beta}\right)}\\
+x &= d\frac{\tan \alpha \tan \beta}{\tan \alpha + \tan \beta}
+\end{align*}
+
+### Another way to measure distance
+
+Consider two sensors $A$ and $B$ at distance $D$.
+
+![](img/GPS_6.png)
+
+\begin{lstlisting}
+def algorithm:
+  A sends signal to B in medium1
+  B responds to A in medium2
+  Both A and B measure RTT, say $T_1 = AB$ + $T_2 = BA$
+  Solve for D as follows:
+\end{lstlisting}
+
+- Let $v_1$ and $v_2$ be prop speeds in medium1 and medium2
+- two equations
+  - $RTT = T_1 + T_2$
+  - $v_1T_1 = v_2T_2$
+- $v_1,v_2,T$ known
+- $T_1,T_2$ unknown
+- And so
+\begin{align*}
+T_1 &= \frac{v_2 T}{v_1 + v_2}\\
+T_2 &= \frac{v_1 T}{v_1 + v_2}
+\end{align*}
+
+## Categories
+
+- **network based**
+  - use service provider network structure for location
+- **handset based**
+  - client software to determine location
+- **hybrid based**
+  - combination of the above two
+
+## How it Works
+
+- **Three position aware neighbours** are required for **2D**, and 4 for 3D
+- A **base station** will **synchronize** the location **aware nodes/anchor** to emit signal at same time
+  - using these signals, **sensor node** can **calculate its location**
 
 ## Three Techniques
 
-## Satellites
+### TOA (Time of Arrival)
+- Computes its distance from three anchor nodes
+
+<!--insert GPS_15-->
+![](img/GPS_15.png){width=80%}
+
+### TDOA (Time Difference of Arrival)
+- Time difference of arrival from two anchors $\vert t_1 - t_2\vert$
+- Assuming **speed** is known, **measuring time** allow us to **calculate distance**
+- $velocity = distance/time$ 
+
+### AOA (Angle of Arrival)
+  - **Sensor node determine directions of signals from two anchor** using array antennas
+  - if the **two sensors** are on **same straight line, use a third anchor**
+  - **Pros:** 2 anchor for 2D, 3 for 3D. No need for synchronization between anchors
+  - **Cons:** line of sight needed for good accuracy. Accuracy decrease with distance. Large and complex hardware
+
+<!--insert GPS_18-->
+![](img/GPS_18.png){width=80%}
+
+- **Signal Strength Technique** (Not sure if needed)
+  - Use the fact that **signal loses strength as a function of distance**
+  - *P/d<sup>2</sup>*
+  - Using three different signals, receiver can determine position similar to TOA
+  - Easily disrupted by transmission phenomena, unreliable accuracy
+
+## Satellites (For GPS)
+ - **Earth-Centred Earth Fixed (ECEF):** cordite system based on aligning Earth axis
+ - **How the receiver calculate its position**
+   - Assume **clocks of receiver and all satellites** are perfectly **synchronized**
+   - Calculation uses **triangulation with satellites**
+   - Receiver measures the time $t_1$ for signal of satellite  to arrive
+   - Since signal travels at speed of light $c$, distance $r_1 = ct_1$
+   - Set of points situated at $r_1$ from $P_1$ form a sphere $S_1$ centered at $P_1$ with radius $r_1$
+   - We know receiver is on $S_1$, consider the points as defined in a Cartesian coordinate system
+   - If $(x, y, z)$ is unknown position of receiver and $(a_1, b_1, c_1)$ is known position of $P_1$ then $(x, y, z)$ describe the points on $S_1$ as:
+   - Now we required 2 more satellites, as 1 is clearly not enough
+   - So we get satellites $P_1$, $P_2$ and $P_3$ with positions $(a_1, b_1, c_1)$, $(a_2, b_2, c_2)$, and $(a_3, b_3, c_3)$ and equations
+     - $(x-a_1)^2+(y-b_1)^2 + (z-c_1)^2 = r_1^2 =c^2t_1^2$
+     - $(x-a_2)^2+(y-b_2)^2 + (z-c_2)^2 = r_2^2 =c^2t_2^2$
+     - $(x-a_3)62+(y-b_3)^2 + (z-c_3)^2 = r_3^2 =c^2t_3^2$
+   - Replace first equation with difference of 1st and 3rd
+   - Replace second equation with difference of 2nd and 3rd
+   - Keep 3rd equation as is
+<!--insert GPS_32, GPS_33, GPS_34 and GPS_35-->
+   - Substitute $x$, and $y$ into equation 3 which solve to get two solutions $z_1$ and $z_2$
+   - Back-substitute $z$ for values $z_1$ and $z_2$ in the two other equations for $x_1$, $x_2$, $y_1$, and $y_2$ 
+   - Formula becomes large very quickly and is inconvenient to get insight
+   - **(not sure if things below are needed)**
+   - Calculating special relativity (SR) and general relativity (GR) is mandatory
+   - ECEF is useful for navigation but there are many easier options in inertial reference frame
+   - A point in inertial frame is denoted by cylindrical space-time coordinates $(t, r, o, z)$
+   - In ECEF is $(t', r', o', z')$
+   - Coordinates are related as follows: $t-=t', r=r', o=o'+w_Et', z=z'$
+     - $w_E$ is uniform angular velocity of Earth
+   - **Issues**
+     - Velocity of satellite clock and gravity field of earth can cause inaccuracy 
+     - Concept of GPS is based on constant speed of light *c*
+     - The atmosphere can cause refraction, reflection effects
+     - Satellites and receivers may not be perfectly in sync
+     - If you see more than four satellites always choose spheres that intersect with largest angle to minimize errors
+<!-- insert GPS_39 -->
+
+# Location Awareness
+
+## Complexity in Models for Wireless Communication
+
+- Traditional (wired, point-to-point) communication networks
+can be described satisfactorily using a graph representation.
+- A station s is able to transmit a message to another station s'
+if and only if there is a wire connecting the two stations.
+- Accurately representing a wireless network is considerably
+harder, since it is nontrivial to decide whether a transmission
+by a station s is successfully received by another station s'.
+- This may depend on the positioning and activities of s and s',
+and on other nearby stations, whose activities might interfere
+with the transmission and prevent its reception
+
+### A Lot of Factors
+- This means that a transmission from s may reach s' in some
+settings but fail to reach it under other settings.
+- Moreover, the question of successful reception is more complex,
+since connections can be of varying quality and capacity.
+- There are many other relevant factors, such as:
+  - the presence of physical obstacles
+  - the directions of the antennae at s and s'
+  - the weather, and more
+- Obtaining an accurate solution taking all of those factors into
+account involves solving the corresponding *Maxwell equations*
+- Since this is usually far too complicated, the common practice
+is to resort to approaches based on approximation models.
+
+## Power Assignments
+- When a sensor transmits to another sensor located at distance
+d from the transmitting sensor, the power of the signal at the
+receiving station is P/$d^2$, where P is the power of the signal at
+the transmitting station
+
+<!-- insert powerAssignment.png -->
+
+![](img/powerAssignment.png){width=80%}
+
+## Rayleigh’s Principle: Physical Model
+- Consider the setting whereby sensors $S_1, S_2,...,S_k$ and S are
+located in the plane and suppose that sensor $S_i$ is at distance
+$d_i$ from S.
+- When the signal from a transmitting station $S_i$ reaches the
+sensor S it will have power $P_i/d_i^2$ , where $P_i$ is the power of the
+transmitted signal at $S_i$.
+- When the k sensors are transmitting at the time then
+according to Rayleigh’s principle only the most “powerful”
+signal can be received by sensor S.
+
+- The signal from a sensor $S_i$, for some i, will be received by
+sensor S if and only if there is a threshold  $\lambda$ > 0 s.t.
+
+$$\frac{P_i}{d_i^2} > \lambda\left(N + \sum_{j=1,j \ne i}^n{\frac{P_j}{d^2_j}}\right)$$
+
+which depends on technical considerations, like, sensor
+equipment sensitivity, and N is ambience noise
+
+- Usually, to simplify notation, we assume that $\lambda$ = 1, N = 0.
+
+<!-- Insert rayleighExample.png -->
+
+![](img/rayleighExample.png){width=80%}
+
+### SINR (Signal-to-Interference & Noise Ratio)
+- This formula represents a rather general model concerning the
+allowed transmission power, referred to as the power control
+model, in which each station can control the power with which
+it transmits.
+- A simpler (and weaker) model is the uniform wireless network
+model, which assumes that all transmissions use the same
+transmission power, i.e., $P_i$ = 1 for every i.
+
+## Idealized Models
+
+## Protocol Model: Equal Power Assumption!
+- The disk indicates an omni-directional antenna!
+- It is rare for two stations to have the same signal power!
+
+<!-- insert antennae1.png -->
+
+![](img/antennae1.png){width=80%}
+
+- In the left picture A can reach B and B can reach A.
+- In the right picture A can reach B but B cannot reach A.
+
+### Connectivity conditions
+- If the common radius of a transmission disk is r:
+  - A can talk to B and B can talk to A $\iff$ B is inside A's disk and A is inside B's disk $\iff d(A,B) \le r\text{ and } d(B,A) \ge r$
+
+## UDGs and Wireless
+- Unit Disk Graphs (UDGs) are used in computer science to
+model the topology of ad hoc wireless communication networks.
+- Nodes are connected through a direct wireless connection
+without a base station. It is assumed that all nodes are
+homogeneous and equipped with omni-directional antennas.
+- Node locations are modeled as Euclidean points(a,b), and the area
+within which a signal from one node can be received by another
+node is modeled as a circle.
+  -$$(x-a)^2 + (y-b)^2 \le r^2$$
+- If all nodes have equal transmission power, the circles are equal.
+- Random geometric graphs, formed as unit disk graphs with
+randomly generated disk centers, have also been used as a
+model of percolation and various other phenomena.
+
+### UDGs: Vertices and Edges
+- The UDG is an abstract model of an ad hoc network.
+  - It is a graph G(V,E) with V the set of vertices and E the
+set of its edges.
+  - V : Vertices are the sensor nodes.
+  - E: Edges between vertices represent connectivity, i.e.,
+whether or not they can communicate.
+
+- Suppose 2 vectors u,v and edge(u,v) exists
+  - $E(u,v) \iff d(u,v) \le r$
+  
+- Two mobile hosts A,B are adjacent if they are within reach of each other
+- There is an edge A,B $\iff$ d(A,B) <= r, here r = 1
+<!-- Look at udg0.png-->
+
+### Examples of UDG
+<!-- Look at udg1.png-->
+
+## UDGs and Mobility
+- The previous UDG model is static.
+- If you want to include mobility then time t must be
+incorporated in the model.
+- $G_0, G_1,...,G_t,...$ is a sequence of UDGs whereby $G_t$ is the
+“state of the ad hoc network” at time t.
+- Given $G_t$ the new network $G_{t+1}$ is obtained from $G_t$ by the
+addition/deletion of nodes/links.
+
+## Gabriel Test
+- Assume points A and B are within range of each other
+<!-- Insert gabriel0.png -->
+  1. Draw circle with diameter AB
+  2. If there is another point, say C inside this circle then
+remove the link connecting A to B (is not needed!)
+
+![](img/gabriel0.png){height=30%}
+
+\begin{theorem}
+Assume a connected wireless network with node
+ranges represented as circles of identical radius. The Gabriel
+algorithm removes all edge crossings!
+\end{theorem}
+
+### Gabriel Test: Observations
+- Call AB a Gabriel edge if the circle with diameter AB contains
+no other points.
+<!-- insert gabriel1.png -->
+- A point X is inside the circle with diameter AB $\iff$ the angle AXB is bigger than $\pi/2$.
+- A point X is inside the circle with diameter AB $\iff$ its distance from the center of the circle is bigger than |AB|/2.
+
+![](img/gabriel1.png){height=30%}
+
+### Gabriel Graph is Planar
+- If the Gabriel edges AC and BD intersect, A, B, C, D must
+form a convex quadragon!
+<!-- insert gabriel2.png -->
+
+![](img/gabriel2.png){height=30%}
+
+Hence $\angle ABC, \angle BCD, \angle CDA, \angle DAB < \pi/2$, contradicting the
+fact that $\angle ABC + \angle BCD + \angle CDA + \angle DAB = 2\pi.$
+
+### Why is edge BD preserved?(Same arguments for why edge AC is preserved)
+<!-- insert gabriel3.png -->
+
+![](img/gabriel3.png){height=30%}
+
+### Advantages of Gabriel Test
+  - Remove crossings
+  - Maintain connectivity
+  - Removes interference
+
+### Disadvantages of Gabriel Test
+  - Takes time to process
+  - Lost edges
+  - Routing tables
+
+### How about Deleted Edges?
+You maintain a Routing Table
+
+- A data base that when you are at A you ask:
+  How do I reach B?
+- It gives you the answer: Go to C
+- And when you reach C you ask again:
+  How do I reach B?
+- It gives you the answer: Go to B.
+- Standard routing table contains an entry for each possible
+destination with the out-going link to use for destination
+- Message delivery proceeds in the obvious manner one link at a
+time, looking up the next link in the table.
+
+## Planarity
+- Planar Graph
+  - A graph G is planar if it can be drawn in the plane in such
+a way that no two edges meet except at a vertex with which
+they are both incident.(A graph with no edge crossings)
+  - Any such drawing is a plane drawing of G
+  - A graph G is non-planar if no plane drawing of G exists
+- The Gabriel test produces a planar network!
+  - It was done by removing edges
+- Sometimes it's impossible to draw planar graphs such as $K_{3,3}$, 3 vertices connecting to 3 other vertices
+
+### Faces of a Planar Graph
+- Every plane drawing of a planar graph divides the plane into a
+number of regions.
+  - For example, any plane drawing of $K_4$ divides the plane into
+four regions: three triangles (3-cycles) and one infinite region
+
+## Geometric Routing
+
+## Routing in a Geometric Planar Network
+Input: A geometric graph.
+Goal. Go from source node s to target node t.
+  - We need some kind of “capabilities” in order to move towards
+the target t. This may include the following
+    - Updating coordinates of current position c
+    - Must know the coordinates of t.
+    – If c is our current position we need to be able to determine
+      the slope of the line ct.
+  - We need to be able to determine the slopes of the edges
+      incident to our current position.
+    
+## Compass Routing Algorithm
+  1. Start at source node c := s.
+  2. in a recursive way:
+    a. Choose edge of our geometric graph incident to our current
+position and with the smallest slope to that of the line ct.
+    b. Traverse the chosen edge.
+    c. Go back to (a) and repeat until target t is found
+
+\begin{theorem}
+Compass routing requires GPS and works in
+many cases (like, random graphs with high probability) and is
+the basis of tiny OS.
+\end{theorem}
+
+\begin{remark}
+Compass routing can fail to reach destination!
+\end{remark}
+
+<!-- Insert compassRoutingFail.png-->
+![](img/compassRoutingFail.png){width=80%}
+
+## Face-Routing Algorithm
+- Starting Phase
+  1. Let s, t be the source and target nodes in a geometric graph
+  2. Determine the straight line st and remember it.(Line st remains the same through the algo)
+  3. Start with c := s as the current node.
+- Face selection and traversal phase:
+  1. Determine the face F incident to c such that F intersects
+     the straight line st. This determines an edge one of whose
+       endpoints is c.
+  2. Select a direction of movement (Left or Right) and move
+       along the edges of the face F.
+  3. In this traversal, eventually you hit an edge, say {u, v},
+       which crosses the straight line st. If neither u nor v is equal
+       to t then select the first vertex u and update the current
+       vertex c <- u
+  4. Iterate: Go back to Item 1.
+- Final phase:
+  1. Stop when t is found.
+- *Theorem 3* Face routing requires GPS and works in all planar
+graphs (and is the basis of route discovery in many ad hoc
+networks)
+
+### Analysis of Face-Routing
+- Face routing always advances to a new face. We never traverse
+the same face twice.
+- The distance from the current position c to t gets smaller with
+each iteration.
+- Each link is traversed a constant number of times. Since the
+graph is planar face routing traverses at most O(n) edges.
+
+### Problems with Face-Routing
+- No indication how long is the Euclidean distance traveled!
 
 # Routing
 
+- Routing: Procedure (Algorithm) to deliver packets between nonadjacent nodes in a P2P network and or sub networks
+- Route Discovery: Algorithm used to find a route
+  - Route Discovery must run before Routing
+
+## Routing Table
+
+- Records entries for each possible destination with the outgoing link recorded
+- Messages move from link to link each using the recorded outgoing link from the record table
+- Variation in routing
+  - Source Routing
+  - Table contains complete path from source to destination
+- Virtual Circuit Routing (example ATM)
+  - Table used to store virtual circuits between source and destination nodes
+
+### Routing Problems
+
+- Routing Selection
+  - Construction and maintenance of routing tables
+- Message delivery
+  - Protocols for converting information in routing table to active packet forwarding
+
+## Routing Optimizations
+
+- LAN have fixed topologies limiting the maximum number of hosts
+- LAN's with the same MAC can be linked by bridges
+- We seek to optimized routing with smaller network units
+
+## Network Units: Autonomous Systems (AS)
+
+- AS consist of a number of subnets which exchange packets with subnets using the same routing Protocol
+- Routing protocols used by AS are called interior routing protocol
+
+## Internets
+
+- Internets will connect a number of AS run by different organizations
+- Routers used to connect different ASs often called gateways
+- Protocols used by gateways are called exterior routing protocols
+
+## Routing Algorithm concepts
+
+- All popular network layer protocols are based of two types of distributed algorithms
+ - Distance Vector: Based on Bellman-Ford Algorithm
+ - Link State: Based on Dijkstra's algorithm
+
 ## Distance Vector (RIP)
 
-## Link State Protocol (LSP)
+- Let's assume you are in Montreal so you post a sign Montreal
+- If you do not know post a sign labelled infinity
+- Each intersection someone is doing the same thing
+- Measure the distance at each intersection and update your sign
+- Keep track of signs posted at each intersection
+- Now calculate distance to each city by determining which direction gives the smallest distance.
+  - Distance vector routing idea
+    - Init distance of source to 0 if  not source set distance to infinity
+    - For all edges if distance can be shortened then update distance to shorter distance for that node
+    - At i-th iteration we have updated all paths to shortest distance up to at most length i
+  - Distance vector routing details
+    - Shortest path routing handles topology changes
+      - tuple (destination, next hop, distance)
+    - To send a packet to a given destination forward to the process in the next hop field
 
-## MSTs
+- Define distance vector D for each node i which contains n nodes. D[0:i-1].
+- D[i, j] will be the number of hops between node i and node j.
+- Each node j periodically broadcasts its distance vector to its immediate neighbours.
+- Each node updates its distance vector with the following equation.
+<!-- Please put image 4 here -->
 
-## Dijkstra
+- Distance Vector Routing Algorithm
+  - Nodes initialize the routing tables
+  - Each node sends its vector to all its neighbours'
+  - Every node will update its information once receiving neighbouring nodes Vector
+  - Convergence: process of getting consistent routing information
+  - No node has all the information
+  - Algorithm is ran in rounds. Each round every node emits its routing table to neighbours
+
+## Link State
+
+- Used to replace RIP
+  - Each node maintains information of all nodes in the network
+    - This happens from the Link State Advertisement
+  - When state of outgoing link changes. nodes broadcast information using flooding
+  - Each node locally computes routing table using a single source version of Dijkstra's algorithm
+  - Open Shortest Path First is an example of an interior link state protocol
+
+### Calculating Maps and Shortest Paths
+
+- First Stage
+  - Determine neighbours
+  - Distribute information of the map to neighbour Nodes
+  - Creating the Map
+- Second Stage
+  - Each node runs Dijkstra independently on there map to find the shortest path to each other node
+- A node maintains two data structures. Tree containing nodes which are "done" and a list of candidates
+- First data structure adds the node itself. Second structure adds all nodes which are connected to the neighbour node
+- Node which is closest to the tree gets added to the appropriate node on the tree
+- Repeat whilst there exists candidate nodes
+- At the end all nodes will be added to the tree. Shortest path being the path from the root to that node
+
+### Link State Protocol information
+
+- Each router is responsible for information on its neighbours
+- Each router construct a Link state packet (LSP) containing
+  - ID of node that created the packet, list of neighbours and cost, sequence number, TTL (Time To Live)
+  - Each router knows the complete map of the network and computers routes to each destination
+  - When a LSP packet is created nodes use flooding to propagate the message to the network
+
+## BFS and Dijkstra
+
+- BFS (Breadth First Search) Tree
+  - Tree T of a graph G is a spanning tree of G such that every node of G, the tree path is a minimum hop path to the root
+- BFS Algorithm
+  - Input a graph G = (V, E)
+  - mark the root r
+  - mark all neighbour vertices that are one hop away from r
+  - mark vertices that are one hop away from the neighbours which are two hops away from r
+  - And so on
+- FIFO queue discipline used
+- Checks whether a vertex has been discovered before enqueueing the vertex which will delay
+- An application of BFS is testing a graph for bipartiteness (Two sets which no element within a set is connected to an element in the same set)
+
+### Route Calculation in LSP: Dijkstra algorithm
+i) add all vertices to a min-heap of $d(v)$ $Q$
+   - initialize $d(s)$ is 0
+   - initialize all other $d(v)$ to $\infty$
+i) pop $s$ and update weight of all neighbors $v$ of $s$ as $d(s) + wt(s,v)$
+   - keep track that you popped it
+i) pop the lowest and repeat the above step for the lowest
+i) continue until $Q$ contains no more vertices
+- $O(|E| \log |E| + |V| \log |E|)$
+
+### Spanning Trees
+- Bridged LANs at the MAC sublayer
+  - Resulting network is non hierarchal
+- Two types of routing on bridged LAN
+  - Spanning Tree routing
+  - Source routing
+- Both Types Assume unique ID's and allow nodes to be turend on and off   
+
+## Spanning Tree Routing
+- Bridge ports correspond to each LAN connected
+- Each port maintains a FBD (forward database)
+- Bridges listen to each port and forwards packets from one LAN to another using FBDs
+  - Each node appears exactly in one FBD creating a spanning tree
+
+### Minimum spanning trees
+- Two standard algorithms for computing MST (Minimum spanning trees)
+  - Prim's algorithm
+  - Kruskal's algorithm
+
+#### Prim's
+  - **(p)**rim's = **(p)**ick a node
+    - pick smallest edge from that vertex that reaches an unvisited vertex
+    - add that edge, now imagine the two vertices as one meta-vertex
+    - repeat until we have reached the last vertex
+  - time complexity
+    - $\boxed{O(|E| \log |E| + |V| \log |E|)}$
+
+#### Kruskal's
+  - start with nodes separated
+    - keep adding smallest edge that doesn't create a cycle
+    - we are done when all vertices are in the tree
+  - time complexity
+    - \# of times we change group label is at most $\log n$
+    - limited by how fast we can sort the edges
+      - $\boxed{(|E| \log |E|)}$
+
+## Dynamic ST routing
+- Due to nodes changing location going down or FDBs of bridges not always complete. The spanning tree may change
+- FBDs are updated using bridge learning
+  - FBD set to empty
+  - Add source ID to FBD
+  - Delete inactive nodes
+  - Initiate search and respond for unknown nodes
+- Failures need to be addressed
+  - Centralized schemes will computer a new MST and update FBDs
+  - Distributed schemes use spanning tree to as fixed leader
+    - if leader goes down then distributed leader election algorithm invoked
+
+## Miscellaneous
+ - Open Shortest Path First (OSPF)
+   - open standard for link state interior protocol
+    - Age fields to deal with failures
+    - authentication for security
+    - Multiple link metrics
+    - two level of hierarchy area and back bone
+    - Allows multiple routes for some destination allowing to distribute traffic
+
+### Distance-Vector vs. Link-State
+- Researchers favour Link state for faster convergence and supporting multiple paths
+- Some prefer distance-vector for simpler structure and less store required
+
+## Measuring performance of Routing
+- Queue Length Metric: # packets opened waiting for transmission on each link
+- Delay Metric: Delay = (DepartTime - ArrivalTime) + TransmissionTime + Latency
+- Utilization Metric: Limits on how much utilization can change over time from previous utilization measurements  
+
+## (Simple Network Management Protocol)
+- Management tool for monitoring
+
+## Routing for mobile IP
+- Triangle problem
+  - Routes may provide suboptimal paths
+  - Mobile node may be on the same network but home network of mobile node is far
+  - Solution let sending node know the care of address of the mobile node
+
+ <!-- Note i skipped slide 79 as I am not sure what it is -->
+
+### Autonomous Systems
+- AS Consist of a number of sub nets
+- Routers managed by 1 or multiple cooperating organizations
+- Routing protocol which use AS called interior routing protocol
+
+### Internets
+- Internet connect a number of AS
+- Different ASs are often called gateways
+
+### Bridged LANs
+- Bridge connect LANs at the MAC sublayer, non hierarchal
+- two methods for routing on LANs spanning tree routing, source routing
+
+### Inter Domain Routing in a Network of ASs
+- Backbone service provider connects corporations and consumers
+
+### Classless Interdomain Routing (CIDR)
+- IP-Address A, B, C, D
+- Used when a class IP address would not be fully utilized
+- CIDR will aggregate routes. Instead of assigning class c routes at random they are assigned as blocks
+
+### Interdomain Routing
+- Information exchanged between hosts via a connectionless protocol
 
 # IP
 
