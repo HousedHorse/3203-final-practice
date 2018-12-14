@@ -143,6 +143,8 @@ header-includes: |
   {#1}[ ]
 
   \newcommand{\acro}[1]{\textbf{(#1))}}
+
+  \usepackage{siunitx}
   ```
 output:
   pdf_document:
@@ -479,11 +481,27 @@ Take inner product of vectors in$\mod 2$.
 ## <!-- 2 -->
 
 ![](test/q2.png){width=80%}
-
 \begin{align*}
+x &= d\frac{\tan \alpha \tan \beta}{\tan \alpha + \tan \beta}\\
+x &= \SI{1000}{\meter}\frac{\tan \frac{\pi}{3} \tan \frac{\pi}{4}}{\tan \frac{\pi}{3} + \tan \frac{\pi}{4}}
 \end{align*}
 
 ## <!-- 3 -->
+
+![](test/q3.png){width=80%}
+
+Slot|Station
+---:|:------
+   1|a e f g h
+   2|a      
+   3|e f g h
+   4|e f   
+   5|e      
+   6|f      
+   7|g h    
+   8|g      
+   9|h      
+
 
 ## <!-- 4 -->
 
