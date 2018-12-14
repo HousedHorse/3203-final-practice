@@ -433,3 +433,62 @@ ARQ protocol.](img/saw3la.png){height=30%}
 ## How it Builds Statistics
 
 ## Equilibrium Model
+
+\newpage
+
+# Sample Test
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+## <!-- 1 -->
+
+![](test/q1.png){width=80%}
+
+###
+
+![](test/q1.1.png){width=80%}
+\begin{align*}
+\text{overhead} &= \frac{nh}{nh + M}
+\end{align*}
+
+###
+
+![](test/q1.2.png){width=80%}
+\begin{align*}
+\text{overhead} &= \frac{nh}{nh + M}\\
+10\% &\ge \frac{nh}{nh + 20h}\\
+\frac{1}{10} &\ge \frac{n}{n + 20}\\
+(n + 20)\frac{1}{10} &\ge n\\
+(n + 20)\frac{1}{10} &\ge n\\
+\frac{n}{10} + 2 &\ge n\\
+n + 20 &\ge 10n\\
+20 &\ge 9n\\
+n &\le \frac{20}{9}\\
+\end{align*}
+
+###
+
+![](test/q1.3.png){width=80%}
+
+Take inner product of vectors in$\mod 2$.
+\begin{align*}
+\langle\vec{A},\vec{B}\rangle \mod 2 &= 1+0+0+0+1+0+0+1+1 \mod 2\\
+&= 0 && \iff \text{orthogonal}
+\end{align*}
+
+## <!-- 2 -->
+
+![](test/q2.png){width=80%}
+
+\begin{align*}
+\end{align*}
+
+## <!-- 3 -->
+
+## <!-- 4 -->
+
+## <!-- 5 -->
+
+## <!-- 6 -->
+
+## <!-- 7 -->
