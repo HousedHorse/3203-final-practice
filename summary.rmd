@@ -436,6 +436,18 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
     - edges are nodes that can each each other
     - asymmetric ranges $\implies$ directed graph
 
+### Traversal
+- **compass routing**
+  - draw line $\vec{st}$
+  - pick smallest angle edge $sv$
+  - draw new line $\vec{vt}$
+  - **doesn't always complete**
+- **face routing**
+  - draw line $\vec{st}$
+  - **LHR** or **RHR**
+  - pick a face which crosses the line
+  - walk it until you are **about to cross**, then **flip face** to next
+
 ## Bluetooth
 
 ### Formation
@@ -448,3 +460,232 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
 1. **slaves** only next to a **master**
 1. each master's **piconet** can have **max 7 slaves**
 1. bridge between **TWO** masters **ONLY**
+
+### Joining Two Piconets
+- **roles** of master and slave can **switch**
+  - done by *changing frequencies*
+- a slave will act as a **bridge**
+
+# GPS
+
+## Three Techniques
+
+## Satellites
+
+# Routing
+
+## Distance Vector
+
+## Link State Protocol
+
+## MST
+- two standard algorithms
+  - Prim
+  - Kruskal
+
+### Kruskal
+- start with nodes separated
+  - keep adding smallest edge that doesn't create a cycle
+  - we are done when all vertices are in the tree
+- time complexity
+  - \# of times we change group label is at most $\log n$
+  - limited by how fast we can sort the edges
+    - $\boxed{(|E| \log |E|)}$
+
+### Prim
+- **(p)**rim's = **(p)**ick a node
+  - pick smallest edge from that vertex that reaches an unvisited vertex
+  - add that edge, now imagine the two vertices as one meta-vertex
+  - repeat until we have reached the last vertex
+- time complexity
+  - $\boxed{O(|E| \log |E| + |V| \log |E|)}$
+
+## Dijkstra
+- add all vertices to a min-heap of $d(v)$ $Q$
+  - initialize $d(s)$ is 0
+  - initialize all other $d(v)$ to $\infty$
+- pop $s$ and update weight of all neighbors $v$ of $s$ as $d(s) + wt(s,v)$
+  - keep track that you popped it
+- pop the lowest and repeat the above step for the lowest
+- continue until $Q$ contains no more vertices
+- time complexity
+  - $\boxed{O(|E| \log |E| + |V| \log |E|)}$
+
+# IP
+
+## IPv4
+
+### Classes
+
+### Subnets
+
+### Subnet Masks
+
+## IPv6
+
+## DHCP
+
+## ARP
+
+## RARP
+
+# TCP
+
+## How it Works (Sliding Window)
+
+## Building Statistics
+
+## Equilibrium Model
+
+- **loss** $\implies$ decrease $w$
+  - $w = \frac{w}{2}$
+- **no loss** $\implies$ increase $w$
+  - $w = w + \frac{1}{w}$
+
+# Sample Test
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+## <!-- 1 -->
+
+![](test/q1.png){width=80%}
+
+###
+
+![](test/q1.1.png){width=80%}
+\begin{align*}
+\text{overhead} &= \frac{nh}{nh + M}
+\end{align*}
+
+###
+
+![](test/q1.2.png){width=80%}
+\begin{align*}
+\text{overhead} &= \frac{nh}{nh + M}\\
+10\% &\ge \frac{nh}{nh + 20h}\\
+\frac{1}{10} &\ge \frac{n}{n + 20}\\
+(n + 20)\frac{1}{10} &\ge n\\
+(n + 20)\frac{1}{10} &\ge n\\
+\frac{n}{10} + 2 &\ge n\\
+n + 20 &\ge 10n\\
+20 &\ge 9n\\
+n &\le \frac{20}{9}\\
+\end{align*}
+
+###
+
+![](test/q1.3.png){width=80%}
+
+Take inner product of vectors in$\mod 2$.
+\begin{align*}
+\langle\vec{A},\vec{B}\rangle \mod 2 &= 1+0+0+0+0+1+0+1+1 \mod 2\\
+&= 0 && \iff \text{orthogonal}
+\end{align*}
+
+## <!-- 2 -->
+
+![](test/q2.png){width=80%}
+\begin{align*}
+x &= d\frac{\tan \alpha \tan \beta}{\tan \alpha + \tan \beta}\\
+x &= \SI{1000}{\meter}\frac{\tan \frac{\pi}{3} \tan \frac{\pi}{4}}{\tan \frac{\pi}{3} + \tan \frac{\pi}{4}}
+\end{align*}
+
+## <!-- 3 -->
+
+![](test/q3.png){width=80%}
+
+Slot|Station
+---:|:------
+   1|a e f g h
+   2|a      
+   3|e f g h
+   4|e f   
+   5|e      
+   6|f      
+   7|g h    
+   8|g      
+   9|h      
+
+## <!-- 4 -->
+
+![](test/q4.png){width=80%}
+
+###
+
+![](test/q4.1.png){width=80%}
+
+ Face|List of Edges Being Traversed
+----:|:----------------------------
+$F_2$|4                        
+$F_3$|12,13                           
+$F_5$|14, 15                        
+
+###
+
+![](test/q4.2.png){width=80%}
+
+\begin{center}
+4, 9, 10, 11, 14, 15
+\end{center}
+
+## <!-- 5 -->
+
+![](test/q5.png){width=80%}
+
+### A
+
+- **valid**
+  - all piconets have slavecount $\le 7$
+  - all piconets have slaves
+  - no adjacent masters
+  - no adjacent slaves
+  - bridge connects **two** piconets by their master nodes
+
+### B
+
+- **invalid**
+- the good
+  - all piconets have slavecount $\le 7$
+  - no adjacent masters
+  - no adjacent slaves
+- the bad
+  - bridge connects **three** piconets by their master nodes
+  - should be **TWO**
+  - one piconet has **no slaves**
+
+## <!-- 6 -->
+
+![](test/q6.png){width=80%}
+
+Define event $A$ is both stations select same frequency.
+\begin{align*}
+P(A) &= n\frac{1}{n}\frac{1}{n}\\
+&= \frac{1}{n}
+\end{align*}
+
+## <!-- 7 -->
+
+![](test/q7.png){width=80%}
+
+###
+
+Give the values $x_1,x_2,x_3$.
+\begin{align*}
+x_1 &= 1 + (-1)^1 = 1 - 1 = 0\\
+x_2 &= 2 + (-1)^2 = 2 + 1 = 3\\
+x_3 &= 3 + (-1)^3 = 3 - 1 = 2
+\end{align*}
+
+###
+
+![](test/q7.2.png){width=80%}
+
+In order for the graph to be connected, we need some node with an x-coordinate of 1 at a bare minimum.
+
+Is it possible to have such an x-coordinate?
+\begin{align*}
+1 &= i + (-1)^i\\
+i &= 0
+\end{align*}
+
+Our $i \in \{1,2,\ldots,n\} \implies i\ne 0$. Therefore it is not a connected graph.
