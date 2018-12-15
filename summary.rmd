@@ -421,7 +421,7 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
 ## Collision-Free Protocols
 
 ### Bitmap
-- **contention period** = 8 slots
+- **contention period** = $N$ slots
 - station $i$ inserts one bit into $i$th slot
 - after $N$ slots, each station knows who wants to transmit
 - transmit **in order**
