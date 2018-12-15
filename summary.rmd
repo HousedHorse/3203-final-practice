@@ -291,11 +291,18 @@ T_O &= \frac{h}{p} && \text{where $h=$ overhead bits, $p=$ message bits}
 - MAC (medium access control)
 - **used more often**
 
+## Uncoordinated Access Control
+- sucks
+- $P(\text{exactly one talks}) = np(1-p)^{n-1}$
+
 ## MAC Protocol
 - Medium Access Control
 - **dynamic**
 - on demand
 - must **minimize** collisions
+- two classes
+  - random access
+  - scheduling
 
 \begin{framed}
 \textbf{MAC vs Static}
@@ -318,11 +325,15 @@ Static $\implies$ separate dedicated channels
   - *distributed* fashion
 
 ## How Does MAC Work?
-
 i) **measure** prop time
 i) **coordinate** access
 i) **select** a winner
 
+### Measure
+- ping
+- $T_{prop}= \frac{d}{v}$
+
+### Coordinate
 \begin{lstlisting}
 def coordinateTwoHosts(A,B):
   A.listen(channel)
@@ -331,10 +342,109 @@ def coordinateTwoHosts(A,B):
     A.transmit(m)
     while no message from B:
       A.listen(channel)
-    if time > $T_{PROP}$:
+    if time > $T_{prop}$:
       break
     else:
       A.retransmit(m)
 
   repeat for B
 \end{lstlisting}
+
+### Select a Winner
+- let $T_A =$ time for a collision detected by A
+- let $T_B =$ time for a collision detected by B
+- A wins $\iff$ $T_A < T_B$
+- loser is quiet until winner completes
+- winner is quiet after transmission for RTT
+
+## MAC Efficiency
+\begin{align*}
+E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
+\end{align*}
+
+# Ethernet
+- **broadcast network**
+  - every node can hear every other
+- when collision occurs
+  - stop sending
+  - wait to retransmit
+
+## Limitations
+- very large packet size as bandwidth increases
+- MAC is technology dependent
+  - are measurements accurate?
+  - measurements may differ between hosts
+- but it is **realistic**
+  - uptime is important
+
+## Backoff Protocols
+- **queue** of nodes **waiting to transmit**
+- keep track of number of attempts
+- define $P(x)$
+  - probability you transmit on attempt $x$
+  - decreasing in $x$
+
+### Implementation
+- station $i$ has $bck_i$
+- set it to 0
+- if queue not empty
+  - attempt transmission with $p(bck_i)$
+    - fails $\implies bck_i++$
+    - succeeds $\implies bck_i := 0$
+- if queue was empty, don't change $bck_i$
+
+## Collision-Free Protocols
+
+### Bitmap
+- **contention period** = 8 slots
+- station $i$ inserts one bit into $i$th slot
+- after $N$ slots, each station knows who wants to transmit
+- transmit **in order**
+- a station $i$ is out of luck if it becomes ready **just after** slot $i$ passes
+
+### Tree Splitting
+- nodes are leaves
+- recursive
+- keep taking left **subtree** until **one node** in **contention**
+  - that node wins
+  - take right subtree if applicable
+  - walk back up to root
+
+### Binary Countdown
+- assume **all addresses** are **same length**
+- node writes its bit from **highest to lowest order**
+  - if I have a 0 and somebody else has a 1
+    - I drop out
+  - otherwise
+    - I stay in
+- last man standing wins
+
+# Wireless
+
+## Cellular
+- organized into **cells**
+  - hexagons
+- **neighboring** cells $\implies$ **different frequency bands**
+
+## Ad Hoc
+- temporary connection
+- **decentralized**
+- model with a **Unit Disk Graph**
+  - **points** and **circles for range**
+  - $G=(V,E)$ where
+    - vertices are nodes
+    - edges are nodes that can each each other
+    - asymmetric ranges $\implies$ directed graph
+
+## Bluetooth
+
+### Formation
+- **master nodes**
+- **slave nodes**
+  - bridge nodes (a special slave)
+
+#### Rules
+1. **master** only next to **slaves** (and **bridges**)
+1. **slaves** only next to a **master**
+1. each master's **piconet** can have **max 7 slaves**
+1. bridge between **TWO** masters **ONLY**

@@ -1733,6 +1733,7 @@ $F_5$|14, 15
 
 - **valid**
   - all piconets have slavecount $\le 7$
+  - all piconets have slaves
   - no adjacent masters
   - no adjacent slaves
   - bridge connects **two** piconets by their master nodes
@@ -1747,6 +1748,7 @@ $F_5$|14, 15
 - the bad
   - bridge connects **three** piconets by their master nodes
   - should be **TWO**
+  - one piconet has **no slaves**
 
 ## <!-- 6 -->
 
