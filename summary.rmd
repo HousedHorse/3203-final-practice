@@ -650,17 +650,84 @@ D[i,k] &= \min_{j,k\ne i}\{w[i,j] + D[j,k]\}
 
 ### Subnetting
 
-
+- solution when addresses can't be made "less flat"
+- **only router** should be **aware**
+- two levels to **three levels**
+  - **net ID**
+  - **subnet ID**
+  - **host ID**
+- single IP, **several physical networks**
+  - subnets
+  - near each other physically
 
 ### Subnet Masks
+- 24 `1`'s
+- followed by 8 `0`'s
+- bitwise **AND** of **address** and **subnet mask**
+  - yields **subnet number**
+
+### Header
+- **no options** $\implies$ **20 bytes**
+- IHL is header length in *words*
+  - a word is **32-bit**
+- TOS
+  - type of service
+- TOS subfield
+  - route selection
+  - subnet service
+  - queuing
+- precedence subfield
+  - degree of urgency
+- options
+  - security
+  - timestamping
+  - source routing
+  - route recording
 
 ## IPv6
+- need **more address space**
+- hexadecimal digits
+  - 16 bit blocks
+- `block1:block2:block3:block4:block5:block6:block7:block8`
+- `block1:block2::block7:block8`
+  - in this example blocks 3-6 inclusive are all 0's
+- `128.33.87.51` = `::00FF:128.33.87.51`
+- prefixes
+  - `001` global unicast
+  - `010` provider based
+
+### Neighbor Discovery
+- each router periodically sends advertisements on subnets
+- indicate
+  - IP address
+  - gateway functionality
+  - link layer address
+  - network prefixes
+  - etc.
+- *automatically identify* routers in the **subnet**
 
 ## DHCP
+- **automate** IP configuration
+- **host broadcasts** *discover message* to **physical network**
+- **server** responds with *offer message*
+- host accepts an offer
+- server sends DHCP ACK and assigns the IP
+  - for a period of time $T$ and two thresholds
+  - $T_1,T_2=T/2,7T/8$
+- $T_1$ is period before it asks to **renew lease**
+- $T_2$ is is period before it starts broadcasting to **any server** on network
+- $T$ is period before it must **start from beginning**
 
 ## ARP
+- **address resolution protocol**
+- translates IP understood locally
+- allows hosts to build tables
+- updates every 15 minutes
 
 ## RARP
+- **reverse address resolution protocol**
+- obsolete
+- request IP address from a computer network
 
 
 \vspace{0.25in}
@@ -669,8 +736,89 @@ D[i,k] &= \min_{j,k\ne i}\{w[i,j] + D[j,k]\}
 # TCP
 
 ## How it Works (Sliding Window)
+- **byte oriented**
+  - sender writes bytes into
+  - receiver reads from
+- variable Max Segment Size
+  - decides when it has enough bytes $(=MSS)$
+  - or sending process requests packets
+  - timer can trigger transmissions
+
+### Opening Connection
+- A sets SYN bit and register a SEQ\#
+- B sets SYN bit and registers a SEQ\#
+  - acknowledges with A's SEQ\# + 1
+- A acknowledges with B's SEQ\# + 1
+- this is important because
+  - A informs B of its starting number
+  - B acknowledges and informs A of its own starting number
+  - A acknowledges B's starting number
+- in this way, they can anticipate what the other will do
+- a timer makes sure that if an expected response is not received, they will retry
+
+### Closing Connection
+- A sets FIN bit with SEQ\#
+- B responds with its own FIN bit
+- A acknowledges
+
+### Sliding Window (Important)
+
+- **credit allocation scheme**
+- each byte transmitted has a sequence number
+- sender includes SEQ\# of first byte
+- receiver acknowledges
+  - $(A=i,W=j)$
+  - all bytes up to $i-1$ are acknowledged
+  - next byte has SEQ\# $i$
+  - grant permission to send next $i,i+1,\ldots,j-1$ bytes
+- keep track of a congestion window $w$ locally
+  - if $W < w$, increase it by sending out a packet
+  - if $W \ge w$, wait for ACK and reduce $W$ (and increase $w$)
 
 ## Building Statistics
+
+### Average Round Trip Time
+
+- $RTT(i) =$ round trip time for $i$th segment
+- $ARTT(k) =$ **average** round trip time for first $k$ segments
+\begin{align*}
+ARTT(k+1) &= \frac{1}{k+1}\sum_{i=1}^{k+1}RTT(i)
+\end{align*}
+- observe we have coefficient $\frac{1}{k+1}$ for all terms
+- or, recursively
+\begin{align*}
+ARTT(k+1) &= \frac{k}{k+1}ARTT(k) + \frac{1}{k+1}RTT(K+1)
+\end{align*}
+- observe we have coefficient $\frac{k}{k+1}$ and $\frac{1}{k+1}$
+
+### Smoothed Round Trip Time
+
+- $SRTT(k) =$ smoothed RTT estimate
+- defined by recursion
+\begin{align*}
+SRTT(K=1) &= \alpha SRTT(k) + (1-\alpha)RTT(k+1)
+\end{align*}
+- $\alpha$ further from $k \implies$ less weight assigned
+
+### Traffic Variance
+
+- calculate error then calculate standard deviation
+\begin{align*}
+AERR(k+1) &= RTT(k+1) - ARTT(k)\\
+ADEV(k+1) &= \frac{1}{k+1}\sum_{i=1}^{k+1}{\vert AERR(i)\vert}\\
+\end{align*}
+
+### RTT Variance Estimation
+
+- **Jacobson's**
+  - works for no retransmissions
+- **Exponential RTO Backoff**
+  - good for when a retransmission occurs
+- **Karn's** (best of both worlds)
+  - do not use measured RTT for retransmitted segments
+  - calculate backoff RTO when retransmission occurs
+  - use backoff RTO until we get an ACK for a new segment
+    - then start using Jacobson's again
 
 ## Equilibrium Model
 
