@@ -174,6 +174,9 @@ output:
   - $GHz \implies 10^9 \text{ cycles per second}$
   - etc.
 
+\vspace{0.25in}
+\hrule
+
 # Formulas
 
 ## Frequency
@@ -231,6 +234,16 @@ T_O &= \frac{h}{p} && \text{where $h=$ overhead bits, $p=$ message bits}
 
 - **extra** over **what we want**
 
+## Orthogonality
+
+- take inner product of two vectors
+- add them in mod 2
+  - $0 \implies$ orthogonal
+  - $1 \implies$ **not** orthogonal
+
+\vspace{0.25in}
+\hrule
+
 # Error Checking
 - VRC
 - LRC
@@ -238,6 +251,10 @@ T_O &= \frac{h}{p} && \text{where $h=$ overhead bits, $p=$ message bits}
   - this guy is usually used
   - use in tandem with ARQ
 - checksum
+
+
+\vspace{0.25in}
+\hrule
 
 # ARQ
 - automatic repeat request
@@ -266,6 +283,10 @@ T_O &= \frac{h}{p} && \text{where $h=$ overhead bits, $p=$ message bits}
 
 ## Stop and Wait
 - like sliding window with a **window size $=1$**
+
+
+\vspace{0.25in}
+\hrule
 
 # Multiaccess
 - problem of **shared channels**
@@ -362,6 +383,10 @@ def coordinateTwoHosts(A,B):
 E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
 \end{align*}
 
+
+\vspace{0.25in}
+\hrule
+
 # Ethernet
 - **broadcast network**
   - every node can hear every other
@@ -419,6 +444,10 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
     - I stay in
 - last man standing wins
 
+
+\vspace{0.25in}
+\hrule
+
 # Wireless
 
 ## Cellular
@@ -448,6 +477,14 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
   - pick a face which crosses the line
   - walk it until you are **about to cross**, then **flip face** to next
 
+### Gabriel Test
+- if **A** and **B** are **in range**
+- draw a **circle** with **radius AB**
+  - if there is some C inside the circle, remove link AB
+  - make link AC, CB instead
+- **removes all edge crossings**
+- edges **preserved** are called **Gabriel edges**
+
 ## Bluetooth
 
 ### Formation
@@ -466,17 +503,97 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
   - done by *changing frequencies*
 - a slave will act as a **bridge**
 
+
+\vspace{0.25in}
+\hrule
+
 # GPS
 
 ## Three Techniques
 
+### TOA
+- **time of arrival**
+- compute distance from
+  - three **anchor nodes**
+  - use **ping time** to do this
+
+### TDOA
+- **time difference of arrival**
+- difference in arrival from **two anchors**
+  - $\vert t_1 - t_2\vert$
+- if **speed in medium is known**
+  - time $\implies$ distance
+  - $v = d/t$
+
+### AOA
+- **angle of arrival**
+- sensor node **determines directions**
+  - from **two anchors**
+- if **two sensors** on **same line**
+  - use a **third anchor**
+
 ## Satellites
 
+- three satellites 
+  - $(a_1,b_1,c_1)$
+  - $(a_2,b_2,c_2)$
+  - $(a_3,b_3,c_3)$
+- three unknowns
+  - $(x,y,z)$
+- solve linear system
+\begin{align*}
+(x-a_1)^2+(y-b_1)^2 + (z-c_1)^2 &= r_1^2 =c^2t_1^2\\
+(x-a_2)^2+(y-b_2)^2 + (z-c_2)^2 &= r_2^2 =c^2t_2^2\\
+(x-a_3)^2+(y-b_3)^2 + (z-c_3)^2 &= r_3^2 =c^2t_3^2
+\end{align*}
+
+
+\vspace{0.25in}
+\hrule
+
 # Routing
+- **routing**
+  - algorithm to **deliver packets**
+  - two problems
+    - selection
+      - routing table
+    - delivery
+- **route discovery**
+  - algorithm to **discover a route**
+  - **precedes** routing
 
 ## Distance Vector
+- **source** distance **is 0**
+  - all **other nodes** $\infty$
+- **for all edges**
+  - if distance to $t$ can be shortened by taking the edge...
+  - update to new lower value
+- at $i$th iteration
+  - all shortest paths of **length at most** $i$ **edges**
+- initially
+\begin{align*}
+D[i,j] &= \begin{cases}
+0 & \text{if $i=j$}\\
+1 & \text{if $j$ is a neighbor of $i$}\\
+\infty & \text{otherwise}\\
+\end{cases}
+\end{align*}
+- then
+\begin{align*}
+D[i,k] &= \min_{j,k\ne i}\{w[i,j] + D[j,k]\}
+\end{align*}
 
 ## Link State Protocol
+- router **responsible for neighbors**
+- make an LSP packet
+  - ID of creator
+  - list of neighbors and cost
+  - sequence number
+  - TTL for the packet
+- LSP **transmitted** to **all routers**
+  - **flooding**
+- every router has a complete map
+- **updating/calculation** uses **Dijkstra's**
 
 ## MST
 - two standard algorithms
@@ -511,13 +628,29 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
 - time complexity
   - $\boxed{O(|E| \log |E| + |V| \log |E|)}$
 
+
+\vspace{0.25in}
+\hrule
+
 # IP
 
 ## IPv4
 
 ### Classes
+- five classes
+  - A 7N 24H
+  - B 14N 16H
+  - C 21N 8H
+  - D multicast
+  - E experiments
 
-### Subnets
+![Division of bits in class A, B, and C IP classes.](img/ip2.png){width=30%}
+
+![Breakdown of the five IP classes.](img/ip3.png){width=60%}
+
+### Subnetting
+
+
 
 ### Subnet Masks
 
@@ -528,6 +661,10 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
 ## ARP
 
 ## RARP
+
+
+\vspace{0.25in}
+\hrule
 
 # TCP
 
@@ -541,6 +678,10 @@ E &= \frac{1}{1+2\frac{T_{prop}}{L}} &&&&
   - $w = \frac{w}{2}$
 - **no loss** $\implies$ increase $w$
   - $w = w + \frac{1}{w}$
+
+
+\vspace{0.25in}
+\hrule
 
 # Sample Test
 
